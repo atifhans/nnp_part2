@@ -1,0 +1,7 @@
+This folder contains code for Part2 of the project1. The simulation and synthesis can be run using the Makefile provided. Below are the targets of the Makefile and their description.
+
+- "make sim" : Use the testbench (part2_tb.sv) written by me to compile and simulate the DUT.
+
+- "make synth" : Synthesis the DUT.
+
+- "make all" : Run both "sim" and "synth" targets.
