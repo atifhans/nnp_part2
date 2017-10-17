@@ -24,20 +24,12 @@ class mac_model; //TODO: change name to mat_mult_model
     
     function void post_randomize();
     begin
-        //$display("Input Data:");
-        //$display("Matrix A:");
         for(int i = 0; i < M_SIZE_A; i++) begin
             mat_a[i][idx] = mat_a_in[i];
-            //$write("%d ", mat_a[i][idx]);
-            //if((i+1) % NCOLS_A == 0) $write("\n");
         end
-        //$display("Matrix B:");
         for(int i = 0; i < M_SIZE_B; i++) begin
             mat_b[i][idx] = mat_b_in[i];
-            //$write("%d ", mat_b[i][idx]);
         end
-        //$write("\n");
-        //$display("Matrix Z:");
         for(int i = 0; i < NCOLS_A; i++) begin
             mat[i][idx] = 0;
             for(int j = 0; j < NCOLS_A; j++) begin
@@ -47,9 +39,7 @@ class mac_model; //TODO: change name to mat_mult_model
                                (mat[i][idx] < 0 && int_a < 0 && int_b > 0));
                 mat[i][idx] = int_b;
             end
-            //$write("%d ", mat[i][idx]);
         end
-        //$write("\n");
         idx++;
     end
     endfunction
@@ -78,6 +68,8 @@ module tb_part1_mvm();
 
     int idr;
     int idx;
+    int j;
+    int num_trans = 4000;
     
     mvm3_part1 #(
         .NROWS_A (3),
@@ -99,82 +91,80 @@ module tb_part1_mvm();
         m_ready = 0;
         data_in = 0;
 
-        for (int i = 0; i < 2000; i++) begin
-            @(posedge clk);
-            #1;
-            if (reset) begin
-               $display("Reseting DUT!");
-               reset = 0; 
+        if (reset) begin
+           @(posedge clk);
+           #1;
+           $display("Reseting DUT!");
+           reset = 0; 
+        end
+
+        for (int i = 0; i < num_trans; i++) begin
+            if(overflow) $display("Overflow Dectected By DUT!");
+            mac_m.randomize();
+            data_in = mac_m.mat_a_in[0];
+            for (j = 0; j < M_SIZE_A; ) begin
+                @(posedge clk);
+                #1;
+                j = (s_valid && s_ready) ? j+1 : j;
+                data_in = mac_m.mat_a_in[j];
+                std::randomize(s_valid, m_ready);
             end
+            j = 0;
+            data_in = mac_m.mat_b_in[j];
+            for (j = 0; j < M_SIZE_B; ) begin
+                @(posedge clk);
+                #1;
+                j = (s_valid && s_ready) ? j+1 : j;
+                data_in = mac_m.mat_b_in[j];
+                std::randomize(s_valid, m_ready);
+            end
+        end
+
+        s_valid = 0;
+        m_ready = 1;
+
+        wait(idx == num_trans);
+
+        #10 $display("!!!Verification PASSED!!!");
+
+        #10 $finish();
+
+    end // initial begin
+
+    always @(posedge clk) begin
+        //TODO: Print description.
+        if(m_valid && m_ready && !reset) begin
+
+            if(idr == 0) begin
+                $display("------Transaction Data Start--------");
+                $display("Matrix A:");
+                for(int i = 0; i < M_SIZE_A; i++) begin
+                    $write("%d ", mac_m.mat_a[i][idx]);
+                    if((i+1) % NCOLS_A == 0) $write("\n");
+                end
+                $display("Matrix B:");
+                for(int i = 0; i < M_SIZE_B; i++) begin
+                    $write("%d ", mac_m.mat_b[i][idx]);
+                end
+                $write("\n");
+                $display("Matrix Z:");
+                for(int i = 0; i < NCOLS_A; i++) begin
+                    $write("%d ", mac_m.mat[i][idx]);
+                end
+                $write("\n");
+                $display("------Transaction Data End----------");
+            end
+            
+            if(data_out == mac_m.mat[idr][idx])
+                $display("PASSED - IDX: %d, IDR: %d, Output: %d, Exp Output: %d", idx, idr, data_out, mac_m.mat[idr][idx]);
             else begin
-               //TODO:$display("Overflow Dectected By DUT!");
-               mac_m.randomize();
-               for (int j = 0; j < M_SIZE_A; ) begin
-                   @(posedge clk);
-                   #1;
-                   data_in = mac_m.mat_a_in[j];
-                   j = (s_valid && s_ready) ? j+1 : j;
-               end
-               for (int j = 0; j < M_SIZE_B; ) begin
-                   @(posedge clk);
-                   #1;
-                   data_in = mac_m.mat_b_in[j];
-                   j = (s_valid && s_ready) ? j+1 : j;
-               end
+                $display("FAILED - IDX: %d, IDR: %d, Output: %d, Exp Output: %d", idx, idr, data_out, mac_m.mat[idr][idx]);
+                $display("!!!Verification FAILED!!!");
+                $finish();
             end
-      end
-
-      @(posedge clk);
-      #1;
-      s_valid = 0;
-      m_ready = 0;
-
-      #100 $display("!!!Verification PASSED!!!");
-
-      #100 $finish();
-
-   end // initial begin
-
-   always begin
-      @(posedge clk);
-      #1;
-      std::randomize(s_valid, m_ready);
-   end
-
-   always @(posedge clk) begin
-       //TODO: Print description.
-       if(m_valid && m_ready && !reset) begin
-
-           if(idr == 0) begin
-               $display("------Transaction Data Start--------");
-               $display("Matrix A:");
-               for(int i = 0; i < M_SIZE_A; i++) begin
-                   $write("%d ", mac_m.mat_a[i][idx]);
-                   if((i+1) % NCOLS_A == 0) $write("\n");
-               end
-               $display("Matrix B:");
-               for(int i = 0; i < M_SIZE_B; i++) begin
-                   $write("%d ", mac_m.mat_b[i][idx]);
-               end
-               $write("\n");
-               $display("Matrix Z:");
-               for(int i = 0; i < NCOLS_A; i++) begin
-                   $write("%d ", mac_m.mat[i][idx]);
-               end
-               $write("\n");
-               $display("------Transaction Data End----------");
-           end
-           
-           if(data_out == mac_m.mat[idr][idx])
-               $display("PASSED - IDX: %d, IDR: %d, Output: %d, Exp Output: %d", idx, idr, data_out, mac_m.mat[idr][idx]);
-           else begin
-               $display("FAILED - IDX: %d, IDR: %d, Output: %d, Exp Output: %d", idx, idr, data_out, mac_m.mat[idr][idx]);
-               $display("!!!Verification FAILED!!!");
-               $finish();
-           end
-           idx = (idr == NCOLS_A-1) ? idx+1 : idx;
-           idr = (idr == NCOLS_A-1) ? 0 : idr+1;
-       end
-   end
+            idx = (idr == NCOLS_A-1) ? idx+1 : idx;
+            idr = (idr == NCOLS_A-1) ? 0 : idr+1;
+        end
+    end
 
 endmodule // tb_part2_mac

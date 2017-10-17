@@ -173,22 +173,23 @@ module mvm3_part1 #(parameter NROWS_A = 3,
 
     always_ff @(posedge clk)
         if(reset) begin
-            vec_cnt       <= 'd0;
-            mac1_valid_in <= 'd0;
-            next_req <= 1'b1;
+            next_req      <= 1'b1;
+            mac1_valid_in <= 1'b0;
+            vec_cnt       <=  'd0;
         end
         else begin
-            if (m_valid && m_ready) begin
-                next_req <= 1'b1;
-            end
             if (vec_cnt == 2'd3) begin
+                next_req      <= 1'b0;
                 mac1_valid_in <= 1'b0;
-                vec_cnt <= 2'd0;
-                next_req <= 1'b0;
+                vec_cnt       <= 2'd0;
             end
-            else if (next_req && state == READ) begin
+            else if (m_valid && m_ready) begin
+                next_req      <= 1'b1;
+            end
+            else if (next_req && (state == READ)) begin
+                next_req      <= 1'b1;
                 mac1_valid_in <= 1'b1;
-                vec_cnt <= vec_cnt + 1'd1;
+                vec_cnt       <= vec_cnt + 1'd1;
             end
         end
 
@@ -217,7 +218,6 @@ module mvm3_part1 #(parameter NROWS_A = 3,
                 s_ready <= 'd1;
             end
         end
-
 
 endmodule
 //end of file.
