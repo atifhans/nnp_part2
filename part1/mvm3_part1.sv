@@ -122,7 +122,7 @@ module mvm3_part1 #(parameter NROWS_A = 3,
             end
 
             READ: begin
-                if(rd_addr_a == MAT_A_SIZE-1 && m_ready && m_valid)
+                if(rd_addr_a == MAT_A_SIZE-1 && rd_addr_b == MAT_B_SIZE-1 && next_req)
                     next_state = WRITE_A;
                 else
                     next_state = READ;
@@ -157,11 +157,11 @@ module mvm3_part1 #(parameter NROWS_A = 3,
             rd_addr_b <= 'd0;
         end
         else begin
-            if (rd_addr_a == MAT_A_SIZE-1) begin
+            if (rd_addr_a == MAT_A_SIZE-1 && next_req) begin
                 rd_addr_a <= 'd0;
                 rd_addr_b <= 'd0;
             end
-            else if (rd_addr_b == MAT_B_SIZE-1) begin
+            else if (rd_addr_b == MAT_B_SIZE-1 && next_req) begin
                 rd_addr_a <= rd_addr_a + 1'd1;
                 rd_addr_b <= 'd0;
             end
