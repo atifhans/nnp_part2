@@ -1,9 +1,14 @@
-//TODO: Put description.
-class mac_model; //TODO: change name to mat_mult_model
-    parameter NROWS_A = 3; //TODO: put these in package.
-    parameter NCOLS_A = 3;
-    parameter NROWS_B = 3;
-    parameter NCOLS_B = 1;
+//-------------------------------------------//
+// Matrix Vector Multiplier Testbench Part-1
+// ------------------------------------------//
+// NAME:  Atif Iqbal
+// NETID: aahangar
+// SBUID: 111416569
+// ------------------------------------------//
+
+import defines_pkg::*;
+
+class mat_mult_model;
 
     localparam M_SIZE_A = NROWS_A * NCOLS_A;
     localparam M_SIZE_B = NROWS_B * NCOLS_B;
@@ -47,11 +52,6 @@ endclass
 
 module tb_part1_mvm();
 
-    parameter NROWS_A = 3;
-    parameter NCOLS_A = 3;
-    parameter NROWS_B = 3;
-    parameter NCOLS_B = 1;
-
     localparam M_SIZE_A = NROWS_A * NCOLS_A;
     localparam M_SIZE_B = NROWS_B * NCOLS_B;
     localparam M_SIZE_Z = NROWS_A * NCOLS_B;
@@ -72,16 +72,16 @@ module tb_part1_mvm();
     int num_trans = 4000;
     
     mvm3_part1 #(
-        .NROWS_A (3),
-        .NCOLS_A (3),
-        .NROWS_B (3),
-        .NCOLS_B (1)) 
+        .NROWS_A ( NROWS_A ),
+        .NCOLS_A ( NCOLS_A ),
+        .NROWS_B ( NROWS_B ),
+        .NCOLS_B ( NCOLS_B )) 
     dut(.*);
 
     initial clk = 0;
     always #5 clk = ~clk;
 
-    mac_model mac_m = new();
+    mat_mult_model matm_m = new();
 
     initial begin
 
@@ -100,22 +100,22 @@ module tb_part1_mvm();
 
         for (int i = 0; i < num_trans; i++) begin
             if(overflow) $display("Overflow Dectected By DUT!");
-            mac_m.randomize();
-            data_in = mac_m.mat_a_in[0];
+            matm_m.randomize();
+            data_in = matm_m.mat_a_in[0];
             for (j = 0; j < M_SIZE_A; ) begin
                 @(posedge clk);
                 #1;
                 j = (s_valid && s_ready) ? j+1 : j;
-                data_in = mac_m.mat_a_in[j];
+                data_in = matm_m.mat_a_in[j];
                 std::randomize(s_valid, m_ready);
             end
             j = 0;
-            data_in = mac_m.mat_b_in[j];
+            data_in = matm_m.mat_b_in[j];
             for (j = 0; j < M_SIZE_B; ) begin
                 @(posedge clk);
                 #1;
                 j = (s_valid && s_ready) ? j+1 : j;
-                data_in = mac_m.mat_b_in[j];
+                data_in = matm_m.mat_b_in[j];
                 std::randomize(s_valid, m_ready);
             end
         end
@@ -132,33 +132,32 @@ module tb_part1_mvm();
     end // initial begin
 
     always @(posedge clk) begin
-        //TODO: Print description.
         if(m_valid && m_ready && !reset) begin
 
             if(idr == 0) begin
                 $display("------Transaction Data Start--------");
                 $display("Matrix A:");
                 for(int i = 0; i < M_SIZE_A; i++) begin
-                    $write("%d ", mac_m.mat_a[i][idx]);
+                    $write("%d ", matm_m.mat_a[i][idx]);
                     if((i+1) % NCOLS_A == 0) $write("\n");
                 end
                 $display("Matrix B:");
                 for(int i = 0; i < M_SIZE_B; i++) begin
-                    $write("%d ", mac_m.mat_b[i][idx]);
+                    $write("%d ", matm_m.mat_b[i][idx]);
                 end
                 $write("\n");
                 $display("Matrix Z:");
                 for(int i = 0; i < NCOLS_A; i++) begin
-                    $write("%d ", mac_m.mat[i][idx]);
+                    $write("%d ", matm_m.mat[i][idx]);
                 end
                 $write("\n");
                 $display("------Transaction Data End----------");
             end
             
-            if(data_out == mac_m.mat[idr][idx])
-                $display("PASSED - IDX: %d, IDR: %d, Output: %d, Exp Output: %d", idx, idr, data_out, mac_m.mat[idr][idx]);
+            if(data_out == matm_m.mat[idr][idx])
+                $display("PASSED - IDX: %d, IDR: %d, Output: %d, Exp Output: %d", idx, idr, data_out, matm_m.mat[idr][idx]);
             else begin
-                $display("FAILED - IDX: %d, IDR: %d, Output: %d, Exp Output: %d", idx, idr, data_out, mac_m.mat[idr][idx]);
+                $display("FAILED - IDX: %d, IDR: %d, Output: %d, Exp Output: %d", idx, idr, data_out, matm_m.mat[idr][idx]);
                 $display("!!!Verification FAILED!!!");
                 $finish();
             end

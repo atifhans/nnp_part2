@@ -5,6 +5,7 @@ simp:
 	vlog /usr/local/synopsys/syn/dw/sim_ver/DW02_mult*.v
 	vlog +acc part3_mac.sv
 	vlog +acc memory.sv
+	vlog +acc defines_pkg.sv
 	vlog +acc mvm3_part1.sv
 	vlog +acc mvm3_part1_simple_tb.sv
 	vsim check_timing -c -do "run -all"
@@ -14,6 +15,7 @@ sim:
 	vlog /usr/local/synopsys/syn/dw/sim_ver/DW02_mult*.v
 	vlog +acc part3_mac.sv
 	vlog +acc memory.sv
+	vlog +acc defines_pkg.sv
 	vlog +acc mvm3_part1.sv
 	vlog +acc mvm3_part1_tb.sv
 	vsim tb_part1_mvm -c -do "run -all"

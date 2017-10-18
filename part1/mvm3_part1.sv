@@ -1,12 +1,17 @@
-//-------------------------------------------//
-// Matrix Vector Multiplier
+// ------------------------------------------//
+// Matrix Vector Multiplier Part-1
+// ------------------------------------------//
+// NAME:  Atif Iqbal
+// NETID: aahangar
+// SBUID: 111416569
 // ------------------------------------------//
 
+import defines_pkg::*;
 
-module mvm3_part1 #(parameter NROWS_A = 3,
-                    parameter NCOLS_A = 3,
-                    parameter NROWS_B = 3,
-                    parameter NCOLS_B = 1)
+module mvm3_part1 #(parameter NROWS_A = NROWS_A,
+                    parameter NCOLS_A = NCOLS_A,
+                    parameter NROWS_B = NROWS_B,
+                    parameter NCOLS_B = NCOLS_B)
 (
     input  logic                clk,
     input  logic                reset,
@@ -93,7 +98,7 @@ module mvm3_part1 #(parameter NROWS_A = 3,
         .valid_out ( mac1_valid_out ),
         .overflow  ( mac1_overflow  ));
 
-    //Write FSM
+    //FSM
     always_ff @(posedge clk)
         if(reset) begin
             state <= WRITE_A;
