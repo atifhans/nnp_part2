@@ -33,6 +33,7 @@ module check_timing();
 
    // Put our test data into this array. These are the values we will feed as input into the system.
    logic [7:0] invals[0:11] = '{1, 2, 3, 4, 5, 6, 7, 8, 9, 1, 2, 3};
+   //logic [7:0] invals[0:11] = '{1, 2, 3, 127, 127, 127, 7, 8, 9, 127, 127, 127}; //for overflow check.
 
    logic [15:0] j;
 
@@ -76,7 +77,7 @@ module check_timing();
 
    always @(posedge clk) begin
       if (m_ready && m_valid) begin
-         $display("y[%d] = %d" , i, data_out); 
+         $display("y[%d] = %d, overflow = %d" , i, data_out, overflow); 
          i=i+1; 
       end 
    end

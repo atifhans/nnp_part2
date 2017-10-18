@@ -52,10 +52,11 @@ module mvm3_part1 #(parameter NROWS_A = NROWS_A,
 
     logic                          next_req;
     logic                          valid_int;
+    logic                          overflow_int;
 
     assign data_out      = mac1_f;
     assign m_valid       = valid_int;
-    assign overflow      = mac1_overflow;
+    assign overflow      = overflow_int;
     assign mac1_a        = data_out_a;
     assign mac1_b        = data_out_b;
 
@@ -201,13 +202,16 @@ module mvm3_part1 #(parameter NROWS_A = NROWS_A,
     always_ff @(posedge clk)
         if(reset) begin
             valid_int <= 1'b0;
+            overflow_int <= 1'b0;
         end
         else begin
             if (mac1_valid_out) begin
                 valid_int <= 1'b1;
+                overflow_int <= mac1_overflow;
             end
             else if (valid_int && m_ready) begin
                 valid_int <= 1'b0;
+                overflow_int <= 1'b0;
             end
         end
 
