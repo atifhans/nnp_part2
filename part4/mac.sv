@@ -135,7 +135,7 @@ module part3_mac #(parameter NUM_S =  NUM_S,
             overflow <= 1'b0; 
         else if (overflow_int && enable_f)
             overflow <= 1'b1;
-        else 
+        else if (vec_cnt == 2'd0)
             overflow <= 1'b0;
 
 endmodule
