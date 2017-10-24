@@ -31,6 +31,7 @@ module part3_mac #(parameter NUM_S =  NUM_S,
     logic                   enable_f;
     logic [NUM_S-1:0]       enable_m;
     logic [VCNT_LSIZE-1:0]  vec_cnt;
+    logic [VCNT_LSIZE-1:0]  vec_cnt_int;
 
     assign e_int = f + d_int;
 
@@ -77,19 +78,21 @@ module part3_mac #(parameter NUM_S =  NUM_S,
     //--------------------------------------------------//
     always_ff @(posedge clk)
         if (reset) begin
-            a_int    <= 8'd0;
-            b_int    <= 8'd0;
-            x_int    <= 8'd0;
-            enable_d <= 1'b0;
+            a_int       <= 8'd0;
+            b_int       <= 8'd0;
+            x_int       <= 8'd0;
+            enable_d    <= 1'b0;
+            vec_cnt_int <=  'd0;
         end
         else if (valid_in) begin
-            a_int    <= a;
-            b_int    <= b;
-            x_int    <= x;
-            enable_d <= 1'b1;
+            a_int       <= a;
+            b_int       <= b;
+            x_int       <= (vec_cnt_int == 0) ? x : x_int;
+            enable_d    <= 1'b1;
+            vec_cnt_int <= (vec_cnt_int == VEC_S-1) ? 0 : vec_cnt_int + 1'b1;
         end
         else begin
-            enable_d <= 1'b0;
+            enable_d    <= 1'b0;
         end
 
 
