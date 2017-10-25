@@ -126,10 +126,10 @@ module part3_mac (
     always_ff @(posedge clk)
         if (reset)
             overflow <= 1'b0; 
-        else if (overflow_int && enable_f)
-            overflow <= 1'b1;
-        else 
+        else if (vec_cnt == 2'd0)
             overflow <= 1'b0;
+        else if (overflow_int & enable_f)
+            overflow <= 1'b1;
 
 endmodule
 //end of file.

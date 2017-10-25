@@ -5,7 +5,7 @@ set CLK_NAME "clk";
 set CLK_PERIOD 0.60;
 set RST_NAME "reset";
 set TOP_MOD_NAME "mvm3_part1";
-set SRC_FILE "defines_pkg.sv mvm3_part1.sv memory.sv part3_mac.sv";
+set SRC_FILE "defines_pkg.sv mvm3_part1.sv memory.sv mac.sv";
 ###############################################
 
 source setupdc.tcl
