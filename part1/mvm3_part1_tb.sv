@@ -115,15 +115,17 @@ module tb_part1_mvm();
             matm_m.randomize();
             for (j = 0; j < M_SIZE_A; ) begin
                 std::randomize(s_valid, m_ready);
+                //s_valid = 1;
+                //m_ready = 1;
                 data_in = matm_m.mat_a_in[j];
-                //cg_inst.sample();
                 @(posedge clk);
                 j = (s_valid && s_ready) ? j+1 : j;
             end
             for (j = 0; j < M_SIZE_B; ) begin
                 std::randomize(s_valid, m_ready);
+                //s_valid = 1;
+                //m_ready = 1;
                 data_in = matm_m.mat_b_in[j];
-                //cg_inst.sample();
                 @(posedge clk);
                 j = (s_valid && s_ready) ? j+1 : j;
             end
