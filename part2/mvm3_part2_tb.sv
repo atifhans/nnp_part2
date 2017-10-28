@@ -83,10 +83,22 @@ module tb_part2_mvm();
         .NCOLS_B ( NCOLS_B )) 
     dut(.*);
 
+    covergroup mvm_cov () @(posedge clk);
+        option.name = "MVM coverage";
+        option.goal = 100;
+        option.weight = 50;
+        cover_point_data_in  : coverpoint data_in;
+        cover_point_data_out : coverpoint data_out;
+        cover_point_m_ready  : coverpoint m_ready; 
+        cover_point_s_valid  : coverpoint s_valid; 
+        cover_point_overflow : coverpoint overflow; 
+    endgroup
+
     initial clk = 0;
     always #5 clk = ~clk;
 
     mat_mult_model matm_m = new();
+    mvm_cov mvm_cov_inst = new();
 
     initial begin
 
@@ -104,33 +116,30 @@ module tb_part2_mvm();
         end
 
         for (int i = 0; i < num_trans; i++) begin
-            if(overflow) $display("Overflow Dectected By DUT!");
             matm_m.randomize();
-            data_in = matm_m.mat_a_in[0];
             for (j = 0; j < M_SIZE_A; ) begin
-                @(posedge clk);
-                #1;
-                j = (s_valid && s_ready) ? j+1 : j;
+                std::randomize(s_valid, m_ready);
+                //s_valid = 1;
+                //m_ready = 1;
                 data_in = matm_m.mat_a_in[j];
-                std::randomize(s_valid, m_ready);
-            end
-            j = 0;
-            data_in = matm_m.mat_b_in[j];
-            for (j = 0; j < M_SIZE_B; ) begin
                 @(posedge clk);
-                #1;
                 j = (s_valid && s_ready) ? j+1 : j;
+            end
+            for (j = 0; j < M_SIZE_B; ) begin
+                std::randomize(s_valid, m_ready);
+                //s_valid = 1;
+                //m_ready = 1;
                 data_in = matm_m.mat_b_in[j];
-                std::randomize(s_valid, m_ready);
-            end
-            j = 0;
-            data_in = matm_m.mat_x_in[j];
-            for (j = 0; j < M_SIZE_B; ) begin
                 @(posedge clk);
-                #1;
                 j = (s_valid && s_ready) ? j+1 : j;
-                data_in = matm_m.mat_x_in[j];
+            end
+            for (j = 0; j < M_SIZE_B; ) begin
                 std::randomize(s_valid, m_ready);
+                //s_valid = 1;
+                //m_ready = 1;
+                data_in = matm_m.mat_x_in[j];
+                @(posedge clk);
+                j = (s_valid && s_ready) ? j+1 : j;
             end
         end
 
@@ -173,10 +182,12 @@ module tb_part2_mvm();
                 $display("------Transaction Data End----------");
             end
             
-            if(data_out == matm_m.mat[idr][idx])
-                $display("PASSED - IDX: %d, IDR: %d, Output: %d, Exp Output: %d", idx, idr, data_out, matm_m.mat[idr][idx]);
+            if(data_out == matm_m.mat[idr][idx] && overflow == matm_m.ovf[idr][idx])
+                $display("PASSED - IDX: %d, IDR: %d, Output: %d, Exp Output: %d, Ovf: %d, Exp Ovf: %d", 
+                         idx, idr, data_out, matm_m.mat[idr][idx], overflow, matm_m.ovf[idr][idx]);
             else begin
-                $display("FAILED - IDX: %d, IDR: %d, Output: %d, Exp Output: %d", idx, idr, data_out, matm_m.mat[idr][idx]);
+                $display("FAILED - IDX: %d, IDR: %d, Output: %d, Exp Output: %d, Ovf: %d, Exp Ovf: %d", 
+                         idx, idr, data_out, matm_m.mat[idr][idx], overflow, matm_m.ovf[idr][idx]);
                 $display("!!!Verification FAILED!!!");
                 $finish();
             end
