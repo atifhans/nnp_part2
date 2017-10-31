@@ -13,7 +13,7 @@ package defines_pkg;
     parameter NROWS_B = 4;
     parameter NCOLS_B = 1;
 
-    parameter NUM_S   = 2;
+    parameter NUM_S   = 3;
     parameter VEC_S   = 4;
 
 endpackage

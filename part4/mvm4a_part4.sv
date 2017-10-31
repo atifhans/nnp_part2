@@ -8,10 +8,10 @@
 
 import defines_pkg::*;
 
-module mvm3_part1 #(parameter NROWS_A = NROWS_A,
-                    parameter NCOLS_A = NCOLS_A,
-                    parameter NROWS_B = NROWS_B,
-                    parameter NCOLS_B = NCOLS_B)
+module mvm4a_part4 #(parameter NROWS_A = NROWS_A,
+                     parameter NCOLS_A = NCOLS_A,
+                     parameter NROWS_B = NROWS_B,
+                     parameter NCOLS_B = NCOLS_B)
 (
     input  logic                clk,
     input  logic                reset,
@@ -65,18 +65,17 @@ module mvm3_part1 #(parameter NROWS_A = NROWS_A,
     logic                          pp_rd_done_dly;
     logic         [VCNT_LSIZE-1:0] vec_cnt;
     logic         [VCNT_LSIZE-1:0] row_cnt;
-    logic         [VCNT_LSIZE-1:0] vld_in_cnt[NROWS_A];
+    logic         [VCNT_LSIZE-1:0] vld_in_cnt;
     logic         [VCNT_LSIZE-1:0] vld_out_cnt;
 
     logic signed             [7:0] mac_a[NROWS_A];
     logic signed             [7:0] mac_b;
     logic                    [7:0] mac_x;
-    logic                          mac_valid_in[NROWS_A];
+    logic                          mac_valid_in;
     logic signed            [15:0] mac_f[NROWS_A];
     logic                          mac_valid_out[NROWS_A];
     logic                          mac_overflow[NROWS_A];
 
-    //logic        [MAT_A_LSIZE-1:0] mac_sel;
     logic        [MAT_A_LSIZE-1:0] mem_sel;
 
     logic                          next_req;
@@ -84,7 +83,7 @@ module mvm3_part1 #(parameter NROWS_A = NROWS_A,
     logic                          overflow_int[NROWS_A];
     logic                          rd_done_prev;
 
-    assign pp_wr_done    = (wr_addr_x   == NROWS_A-1) & s_valid & s_ready;
+    assign pp_wr_done    = (wr_addr_b   == NROWS_A-1) & s_valid & s_ready;
     assign pp_rd_done    = (vld_out_cnt == NROWS_A-1) & m_valid & m_ready;
     assign s_ready       = (pp_wr_cnt != 2'd2) && (state != IDLE);
 
@@ -92,10 +91,11 @@ module mvm3_part1 #(parameter NROWS_A = NROWS_A,
     assign mac_x         = (pp_flag) ? ping_data_out_x : pong_data_out_x;
 
     assign ping_addr_a   = ((state == WRITE_A) & !pp_flag) ? wr_addr_a : rd_addr_a;
-    assign ping_addr_b   = ((state == WRITE_B) & !pp_flag) ? wr_addr_b : rd_addr_b;
-    assign ping_addr_x   = ((state == WRITE_X) & !pp_flag) ? wr_addr_x : rd_addr_x;
     assign pong_addr_a   = ((state == WRITE_A) &  pp_flag) ? wr_addr_a : rd_addr_a;
+
+    assign ping_addr_b   = ((state == WRITE_B) & !pp_flag) ? wr_addr_b : rd_addr_b;
     assign pong_addr_b   = ((state == WRITE_B) &  pp_flag) ? wr_addr_b : rd_addr_b;
+    assign ping_addr_x   = ((state == WRITE_X) & !pp_flag) ? wr_addr_x : rd_addr_x;
     assign pong_addr_x   = ((state == WRITE_X) &  pp_flag) ? wr_addr_x : rd_addr_x;
 
     assign ping_wr_en_b  = (state == WRITE_B) & s_valid & !pp_flag;
@@ -107,7 +107,7 @@ module mvm3_part1 #(parameter NROWS_A = NROWS_A,
         data_out = 'bx;
         m_valid  = 'bx;
         overflow = 'bx;
-        for(int i = 0; i < NROWS_A; i++) begin
+        for(int i = 0; i <= NROWS_A; i++) begin
 
             if(vld_out_cnt == i) begin
                 data_out = mac_f[i];
@@ -133,6 +133,7 @@ module mvm3_part1 #(parameter NROWS_A = NROWS_A,
         for(j = 0; j < NROWS_A; j++) begin
             part3_mac #(
                 .NUM_S     ( NUM_S             ),
+                .IDX       ( j                 ),
                 .VEC_S     ( VEC_S             ))
             u_mac (
                 .clk       ( clk               ),
@@ -140,7 +141,7 @@ module mvm3_part1 #(parameter NROWS_A = NROWS_A,
                 .a         ( mac_a[j]          ),
                 .b         ( mac_b             ),
                 .x         ( mac_x             ),
-                .valid_in  ( mac_valid_in[j]   ),
+                .valid_in  ( mac_valid_in      ),
                 .f         ( mac_f[j]          ),
                 .valid_out ( mac_valid_out[j]  ),
                 .overflow  ( mac_overflow[j]   ));
@@ -251,7 +252,7 @@ module mvm3_part1 #(parameter NROWS_A = NROWS_A,
 
             WRITE_A: begin
                 if((wr_addr_a == NROWS_A-1) & (mem_sel == NROWS_A-1) & s_valid) begin
-                    next_state = WRITE_B;
+                    next_state = WRITE_X;
                     next_pp_flag = pp_flag;
                 end
                 else begin
@@ -260,18 +261,18 @@ module mvm3_part1 #(parameter NROWS_A = NROWS_A,
                 end
             end
 
-            WRITE_B: begin
-                if((wr_addr_b == NROWS_A-1) & s_valid) begin
-                    next_state = WRITE_X;
+            WRITE_X: begin
+                if((wr_addr_x == NROWS_A-1) & s_valid) begin
+                    next_state = WRITE_B;
                     next_pp_flag = pp_flag;
                 end
                 else begin
-                    next_state = WRITE_B;
+                    next_state = WRITE_X;
                     next_pp_flag = pp_flag;
                 end
             end
 
-            WRITE_X: begin
+            WRITE_B: begin
                 if(pp_wr_done & (rd_done_prev | pp_rd_done_dly)) begin
                     next_state = WRITE_A;
                     next_pp_flag = ~pp_flag;
@@ -281,7 +282,7 @@ module mvm3_part1 #(parameter NROWS_A = NROWS_A,
                     next_pp_flag = pp_flag;
                 end
                 else begin
-                    next_state = WRITE_X;
+                    next_state = WRITE_B;
                     next_pp_flag = pp_flag;
                 end
             end
@@ -363,7 +364,7 @@ module mvm3_part1 #(parameter NROWS_A = NROWS_A,
                 rd_addr_b <= 'd0;
                 row_cnt   <= row_cnt + 1'b1;
             end
-            else if ((pp_wr_cnt > 0) & next_req) begin
+            else if ((pp_wr_cnt > 0) & next_req & (vld_in_cnt != NROWS_A)) begin
                 rd_addr_a <= rd_addr_a + 1'd1;
                 rd_addr_b <= rd_addr_b + 1'd1;
                 rd_addr_x <= rd_addr_x + 1'd1;
@@ -372,27 +373,21 @@ module mvm3_part1 #(parameter NROWS_A = NROWS_A,
 
     always_ff @(posedge clk)
         if(reset) begin
-            for(int i = 0; i < NROWS_A; i++) begin
-                mac_valid_in[i] <= 1'b0;
-                vld_in_cnt[i]   <=  'd0;
-            end
-            next_req      <= 1'b1;
-            vec_cnt       <=  'd0;
+            mac_valid_in <= 1'b0;
+            vld_in_cnt   <=  'd0;
+            next_req     <= 1'b1;
+            vec_cnt      <=  'd0;
         end
         else begin
-            if (vld_in_cnt[NROWS_A-1] == NROWS_A) begin
+            if (vld_in_cnt == NROWS_A) begin
                 next_req      <= 1'b0;
-                for(int i = 0; i < NROWS_A; i++) begin
-                    mac_valid_in[i] <= 1'b0;
-                    vld_in_cnt[i]   <=  'd0;
-                end
+                mac_valid_in  <= 1'b0;
+                vld_in_cnt    <=  'd0;
                 vec_cnt       <= 2'd0;
             end
             else if (next_req && (pp_wr_cnt > 0)) begin
-                for(int i = 0; i < NROWS_A; i++) begin
-                    mac_valid_in[i] <= ((vec_cnt >= i) && (vec_cnt < i+NROWS_A)) ? 1'b1 : 1'b0; 
-                    vld_in_cnt[i]   <= (vec_cnt >= i) ? vld_in_cnt[i] + 1'b1 : vld_in_cnt[i]; //TODO: is required for only the last one.
-                end
+                mac_valid_in  <= (vec_cnt < NROWS_A) ? 1'b1 : 1'b0; 
+                vld_in_cnt    <= vld_in_cnt + 1'b1;
                 next_req      <= 1'b1;
                 vec_cnt       <= vec_cnt + 1'd1;
             end
@@ -406,7 +401,7 @@ module mvm3_part1 #(parameter NROWS_A = NROWS_A,
             vld_out_cnt <= 'd0;
         end
         else begin
-            if(vld_out_cnt == NROWS_A) begin
+            if(vld_out_cnt == NROWS_A-1) begin
                 vld_out_cnt <= 'd0;
             end
             else if(m_valid & m_ready) begin

@@ -5,6 +5,7 @@
 import defines_pkg::*;
 
 module part3_mac #(parameter NUM_S =  NUM_S,
+                   parameter IDX   =  0,
                    parameter VEC_S =  VEC_S)
 (
     input  logic                clk, 
@@ -87,7 +88,7 @@ module part3_mac #(parameter NUM_S =  NUM_S,
         else if (valid_in) begin
             a_int       <= a;
             b_int       <= b;
-            x_int       <= (vec_cnt_int == 0) ? x : x_int;
+            x_int       <= (vec_cnt_int == IDX) ? x : x_int;
             enable_d    <= 1'b1;
             vec_cnt_int <= (vec_cnt_int == VEC_S-1) ? 0 : vec_cnt_int + 1'b1;
         end
@@ -105,7 +106,7 @@ module part3_mac #(parameter NUM_S =  NUM_S,
             enable_f <= 1'b0;
         end
         else if (enable_m[0]) begin
-            d_int    <= c_int; 
+            d_int    <= (vec_cnt == VEC_S-2) ? c_int + x_int : c_int; 
             enable_f <= 1'b1;
         end
         else begin
@@ -122,7 +123,17 @@ module part3_mac #(parameter NUM_S =  NUM_S,
             vec_cnt   <=   'd0;
         end
         else if (enable_f) begin
-            f         <= (vec_cnt ==    2'd0) ? d_int + x_int : f + d_int;
+            //if (vec_cnt == 2'd0)
+            //    f <= (vec_cnt == IDX) ? d_int + x_int : d_int;
+            //else
+            //    f <= (vec_cnt == IDX) ? f + d_int + x_int : f + d_int;
+
+            //f <= (vec_cnt == VEC_S-1) ? f + d_int + x_int : 
+            //     (vec_cnt ==    2'd0) ? d_int : f + d_int;
+
+            //f         <= (vec_cnt ==    2'd0) ? d_int + x_int : f + d_int;
+
+            f         <= (vec_cnt ==    2'd0) ? d_int : f + d_int;
             vec_cnt   <= (vec_cnt == VEC_S-1) ? 0 : vec_cnt + 1'b1;
             valid_out <= (vec_cnt == VEC_S-1) ? 1'b1 : 1'b0;
         end
@@ -136,10 +147,10 @@ module part3_mac #(parameter NUM_S =  NUM_S,
     always_ff @(posedge clk)
         if (reset)
             overflow <= 1'b0; 
-        else if (overflow_int && enable_f)
-            overflow <= 1'b1;
-        else if (vec_cnt == 2'd0)
+        else if (vec_cnt == 0)
             overflow <= 1'b0;
+        else if (overflow_int & enable_f)
+            overflow <= 1'b1;
 
 endmodule
 //end of file.
