@@ -40,8 +40,10 @@ class mat_mult_model;
             for(int j = 0; j < NCOLS_A; j++) begin
                 int_a = mat_a[j+i*NCOLS_A][idx] * mat_b[j][idx];
                 int_b = mat[i][idx] + int_a;
-                ovf[i][idx] = ((mat[i][idx] > 0 && int_a > 0 && int_b < 0) ||
-                               (mat[i][idx] < 0 && int_a < 0 && int_b > 0));
+                if(j == 0 || ovf[i][idx] == 0) begin
+                    ovf[i][idx] = ((mat[i][idx] > 0 && int_a > 0 && int_b < 0) ||
+                                   (mat[i][idx] < 0 && int_a < 0 && int_b > 0));
+                end
                 mat[i][idx] = int_b;
             end
         end
@@ -83,6 +85,7 @@ module tb_part1_mvm();
         option.name = "MVM coverage";
         option.goal = 100;
         option.weight = 50;
+        option.per_instance = 1;
         cover_point_data_in  : coverpoint data_in;
         cover_point_data_out : coverpoint data_out;
         cover_point_m_ready  : coverpoint m_ready; 

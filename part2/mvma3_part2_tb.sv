@@ -45,8 +45,10 @@ class mat_mult_model;
             for(int j = 0; j < NCOLS_A; j++) begin
                 int_a = mat_a[j+i*NCOLS_A][idx] * mat_b[j][idx];
                 int_b = mat[i][idx] + int_a;
-                ovf[i][idx] = ((mat[i][idx] > 0 && int_a > 0 && int_b < 0) ||
-                               (mat[i][idx] < 0 && int_a < 0 && int_b > 0));
+                if(j == 0 || ovf[i][idx] == 0) begin
+                    ovf[i][idx] = ((mat[i][idx] > 0 && int_a > 0 && int_b < 0) ||
+                                   (mat[i][idx] < 0 && int_a < 0 && int_b > 0));
+                end
                 mat[i][idx] = int_b;
             end
         end
@@ -76,7 +78,7 @@ module tb_part2_mvm();
     int j;
     int num_trans = 4000;
     
-    mvm3_part1 #(
+    mvma3_part2 #(
         .NROWS_A ( NROWS_A ),
         .NCOLS_A ( NCOLS_A ),
         .NROWS_B ( NROWS_B ),
@@ -87,6 +89,7 @@ module tb_part2_mvm();
         option.name = "MVM coverage";
         option.goal = 100;
         option.weight = 50;
+        option.per_instance = 1;
         cover_point_data_in  : coverpoint data_in;
         cover_point_data_out : coverpoint data_out;
         cover_point_m_ready  : coverpoint m_ready; 
@@ -129,7 +132,7 @@ module tb_part2_mvm();
                 std::randomize(s_valid, m_ready);
                 //s_valid = 1;
                 //m_ready = 1;
-                data_in = matm_m.mat_b_in[j];
+                data_in = matm_m.mat_x_in[j];
                 @(posedge clk);
                 j = (s_valid && s_ready) ? j+1 : j;
             end
@@ -137,7 +140,7 @@ module tb_part2_mvm();
                 std::randomize(s_valid, m_ready);
                 //s_valid = 1;
                 //m_ready = 1;
-                data_in = matm_m.mat_x_in[j];
+                data_in = matm_m.mat_b_in[j];
                 @(posedge clk);
                 j = (s_valid && s_ready) ? j+1 : j;
             end
@@ -174,9 +177,14 @@ module tb_part2_mvm();
                     $write("%d ", matm_m.mat_x[i][idx]);
                 end
                 $write("\n");
-                $display("Matrix Z:");
+                $display("Matrix Out:");
                 for(int i = 0; i < NCOLS_A; i++) begin
                     $write("%d ", matm_m.mat[i][idx]);
+                end
+                $write("\n");
+                $display("Overflow Out:");
+                for(int i = 0; i < NCOLS_A; i++) begin
+                    $write("%d ", matm_m.ovf[i][idx]);
                 end
                 $write("\n");
                 $display("------Transaction Data End----------");

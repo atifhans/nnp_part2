@@ -2,10 +2,10 @@
 # Setup: fill out the following parameters: name of clock signal, clock period (ns),
 # reset signal name (if used), name of top-level module, name of source file
 set CLK_NAME "clk";
-set CLK_PERIOD 0.60;
+set CLK_PERIOD 0.62;
 set RST_NAME "reset";
-set TOP_MOD_NAME "mvm3_part1";
-set SRC_FILE "defines_pkg.sv mvm3_part2.sv memory.sv mac.sv";
+set TOP_MOD_NAME "mvma4_part3";
+set SRC_FILE "defines_pkg.sv mvma4_part3.sv memory.sv mac.sv";
 ###############################################
 
 source setupdc.tcl

@@ -6,8 +6,8 @@ sim:
 	vlog +acc mac.sv
 	vlog +acc memory.sv
 	vlog +acc defines_pkg.sv
-	vlog +acc mvm3_part2.sv
-	vlog +acc mvm3_part2_tb.sv
+	vlog +acc mvma3_part2.sv
+	vlog +acc mvma3_part2_tb.sv
 	vsim tb_part2_mvm -c -do "coverage save -onexit mac_cover.ucdb;run -all" -coverage -voptargs="+cover=bcfst"
 
 sim_gui:
