@@ -401,7 +401,7 @@ module mvm4a_part4 #(parameter NROWS_A = NROWS_A,
             vld_out_cnt <= 'd0;
         end
         else begin
-            if(vld_out_cnt == NROWS_A-1) begin
+            if(vld_out_cnt == NROWS_A) begin
                 vld_out_cnt <= 'd0;
             end
             else if(m_valid & m_ready) begin
