@@ -27,8 +27,8 @@ Initializing...
 set CLK_NAME "clk";
 clk
 #set CLK_PERIOD 0.73;
-set CLK_PERIOD 0.617;
-0.617
+set CLK_PERIOD 0.618;
+0.618
 set RST_NAME "reset";
 reset
 set TOP_MOD_NAME "mvm4a_part4";
@@ -76,7 +76,6 @@ Warning:  ./mvm4a_part4.sv:328: signed to unsigned conversion occurs. (VER-318)
 Warning:  ./mvm4a_part4.sv:361: signed to unsigned conversion occurs. (VER-318)
 Warning:  ./mvm4a_part4.sv:354: signed to unsigned conversion occurs. (VER-318)
 Warning:  ./mvm4a_part4.sv:354: signed to unsigned conversion occurs. (VER-318)
-Warning:  ./mvm4a_part4.sv:404: signed to unsigned conversion occurs. (VER-318)
 Warning:  ./mvm4a_part4.sv:420: signed to unsigned conversion occurs. (VER-318)
 Warning:  ./mvm4a_part4.sv:107: unsigned to signed assignment occurs. (VER-318)
 
@@ -544,8 +543,8 @@ Information: In design 'mvm4a_part4', the register 'genblk1[2].u_mac/enable_m_re
   ... minimum area retiming step 3 done.
   Beginning final register move ...
   ... final register move done.
-  Lower bound estimate = 0.61
-  Critical path length = 0.61
+  Lower bound estimate = 0.58
+  Critical path length = 0.58
   Clock correction = 0.13 (clock-to-Q delay = 0.09, setup = 0.04, uncertainty = 0.00)
   Retiming mvm4a_part4_DW02_mult_3_stage_J1_1 (genblk1[2].u_mac/genblk1.genblk1.multinstance)
   Preferred flip-flop is DFFS_X1 with setup = 0.04
@@ -584,8 +583,8 @@ Information: In design 'mvm4a_part4', the register 'genblk1[2].u_mac/enable_m_re
   ... minimum area retiming step 3 done.
   Beginning final register move ...
   ... final register move done.
-  Lower bound estimate = 0.61
-  Critical path length = 0.61
+  Lower bound estimate = 0.58
+  Critical path length = 0.58
   Clock correction = 0.13 (clock-to-Q delay = 0.09, setup = 0.04, uncertainty = 0.00)
   Retiming mvm4a_part4_DW02_mult_3_stage_J1_3 (genblk1[0].u_mac/genblk1.genblk1.multinstance)
   Preferred flip-flop is DFFS_X1 with setup = 0.04
@@ -604,20 +603,19 @@ Information: In design 'mvm4a_part4', the register 'genblk1[2].u_mac/enable_m_re
   ... minimum area retiming step 3 done.
   Beginning final register move ...
   ... final register move done.
-  Lower bound estimate = 0.59
-  Critical path length = 0.59
+  Lower bound estimate = 0.58
+  Critical path length = 0.58
   Clock correction = 0.13 (clock-to-Q delay = 0.09, setup = 0.04, uncertainty = 0.00)
   Mapping Optimization (Phase 2)
-Information: The register 'vld_out_cnt_reg[2]' is a constant and will be removed. (OPT-1206)
 
                                   TOTAL                                                
    ELAPSED            WORST NEG   SETUP    DESIGN                              LEAKAGE 
     TIME      AREA      SLACK     COST    RULE COST         ENDPOINT            POWER  
   --------- --------- --------- --------- --------- ------------------------- ---------
-    0:00:11    9790.4      0.11      45.7      32.7                           221268.2969
-    0:00:11    9790.4      0.11      45.7      32.7                           221268.2969
-    0:00:11    9790.4      0.11      45.7      32.7                           221268.2969
-    0:00:11    9790.1      0.11      45.7      32.7                           221253.9375
+    0:00:13    9695.2      0.18      47.7      24.2                           218075.2188
+    0:00:13    9690.9      0.18      47.7      24.2                           217960.3906
+    0:00:13    9690.9      0.18      47.7      24.2                           217960.3906
+    0:00:13    9690.9      0.18      47.7      24.2                           217960.3906
   Re-synthesis Optimization (Phase 1)
   Re-synthesis Optimization (Phase 2)
   Global Optimization (Phase 1)
@@ -652,7 +650,7 @@ Information: The register 'vld_out_cnt_reg[2]' is a constant and will be removed
   Global Optimization (Phase 30)
   Global Optimization (Phase 31)
   Mapping 'mvm4a_part4_DP_OP_281J1_125_1328_1'
-    0:00:13    8532.5      0.09      29.5       0.0                           177010.6094
+    0:00:15    8528.2      0.08      21.4       0.0                           176777.0625
 
 
 
@@ -663,39 +661,40 @@ Information: The register 'vld_out_cnt_reg[2]' is a constant and will be removed
    ELAPSED            WORST NEG   SETUP    DESIGN                              LEAKAGE 
     TIME      AREA      SLACK     COST    RULE COST         ENDPOINT            POWER  
   --------- --------- --------- --------- --------- ------------------------- ---------
-    0:00:13    8532.5      0.09      29.5       0.0                           177010.6094
-    0:00:13    8532.5      0.09      29.5       0.0                           177010.6094
-    0:00:14    8532.2      0.09      29.3       0.0                           176995.8125
-    0:00:14    8532.2      0.09      29.3       0.0                           176995.8125
-    0:00:15    8569.5      0.07      24.8       0.0                           178215.0000
-    0:00:15    8569.5      0.07      24.8       0.0                           178215.0000
-    0:00:15    8572.9      0.07      24.7       0.0                           178354.0312
-    0:00:15    8572.9      0.07      24.7       0.0                           178354.0312
-    0:00:16    8622.9      0.06      18.2       0.0                           179759.4844
-    0:00:16    8622.9      0.06      18.2       0.0                           179759.4844
-    0:00:18    8697.9      0.05       9.8       0.0                           182006.1406
-    0:00:18    8697.9      0.05       9.8       0.0                           182006.1406
-    0:00:18    8740.8      0.05       9.5       0.0                           183182.0000
+    0:00:15    8528.2      0.08      21.4       0.0                           176777.0625
+    0:00:15    8528.2      0.08      21.4       0.0                           176777.0625
+    0:00:15    8527.2      0.08      21.4       0.0                           176698.5000
+    0:00:15    8527.2      0.08      21.4       0.0                           176698.5000
+    0:00:19    8775.9      0.05      10.5       0.0                           184217.6094
+    0:00:19    8775.9      0.05      10.5       0.0                           184217.6094
+    0:00:19    8775.3      0.04      10.5       0.0                           184214.9688
+    0:00:19    8775.3      0.04      10.5       0.0                           184214.9688
+    0:00:20    8856.2      0.04       5.7       0.0                           186836.6250
+    0:00:20    8856.2      0.04       5.7       0.0                           186836.6250
+    0:00:20    8876.7      0.03       4.7       0.0                           187405.1250
+    0:00:20    8876.7      0.03       4.7       0.0                           187405.1250
+    0:00:21    8876.7      0.03       4.7       0.0                           187405.1250
 
   Beginning Delay Optimization
   ----------------------------
-    0:00:18    8738.6      0.05       9.5       0.0                           183102.9375
-    0:00:20    8756.7      0.05       8.4       0.0                           183673.9844
-    0:00:20    8756.7      0.05       8.4       0.0                           183673.9844
-    0:00:20    8756.7      0.05       8.4       0.0                           183673.9844
-    0:00:20    8756.7      0.05       8.4       0.0                           183673.9844
-    0:00:21    8756.7      0.05       8.4       0.0                           183673.9844
-    0:00:21    8756.7      0.05       8.4       0.0                           183673.9844
-    0:00:21    8756.7      0.05       8.4       0.0                           183673.9844
-    0:00:22    8781.5      0.03       5.9       0.0                           184281.2500
-    0:00:22    8799.0      0.03       5.8       0.0                           184975.0312
+    0:00:21    8875.6      0.03       4.7       0.0                           187376.4219
+    0:00:21    8875.6      0.03       4.7       0.0                           187376.4219
+    0:00:21    8875.6      0.03       4.7       0.0                           187376.4219
+    0:00:21    8875.6      0.03       4.7       0.0                           187376.4219
+    0:00:21    8875.6      0.03       4.7       0.0                           187376.4219
+    0:00:21    8875.6      0.03       4.7       0.0                           187376.4219
+    0:00:21    8875.6      0.03       4.7       0.0                           187376.4219
+    0:00:21    8875.6      0.03       4.7       0.0                           187376.4219
+    0:00:22    8908.9      0.01       0.5       0.0 genblk1[1].u_mat_a_mem_pong/mem_reg[2][7]/D 188028.0156
+    0:00:22    8917.1      0.01       0.4       0.0                           188309.6875
+    0:00:22    8925.1      0.01       0.4       0.0                           188489.6562
 
                                   TOTAL                                                
    ELAPSED            WORST NEG   SETUP    DESIGN                              LEAKAGE 
     TIME      AREA      SLACK     COST    RULE COST         ENDPOINT            POWER  
   --------- --------- --------- --------- --------- ------------------------- ---------
-    0:00:22    8799.0      0.03       5.8       0.0                           184975.0312
-    0:00:23    8781.5      0.03       5.8       0.0                           184405.2969
+    0:00:22    8925.1      0.01       0.4       0.0                           188489.6562
+    0:00:23    8884.7      0.01       0.4       0.0                           187246.6406
 
 
   Beginning Leakage Power Optimization  (max_leakage_power 0)
@@ -705,7 +704,7 @@ Information: The register 'vld_out_cnt_reg[2]' is a constant and will be removed
    ELAPSED            WORST NEG   SETUP    DESIGN                              LEAKAGE 
     TIME      AREA      SLACK     COST    RULE COST         ENDPOINT            POWER  
   --------- --------- --------- --------- --------- ------------------------- ---------
-    0:00:23    8762.3      0.03       5.8       0.0                           183888.4219
+    0:00:24    8851.7      0.01       0.4       0.0                           186323.1875
   Global Optimization (Phase 32)
   Global Optimization (Phase 33)
   Global Optimization (Phase 34)
@@ -721,43 +720,41 @@ Information: The register 'vld_out_cnt_reg[2]' is a constant and will be removed
   Global Optimization (Phase 44)
   Global Optimization (Phase 45)
   Global Optimization (Phase 46)
-  Global Optimization (Phase 47)
-  Global Optimization (Phase 48)
-    0:00:25    8657.2      0.00       0.0       0.0                           179231.5625
-    0:00:25    8657.2      0.00       0.0       0.0                           179231.5625
-    0:00:25    8657.2      0.00       0.0       0.0                           179231.5625
-    0:00:26    8657.0      0.00       0.0       0.0                           179015.6875
-    0:00:26    8657.0      0.00       0.0       0.0                           179015.6875
-    0:00:26    8657.0      0.00       0.0       0.0                           179015.6875
-    0:00:26    8657.0      0.00       0.0       0.0                           179015.6875
-    0:00:26    8657.0      0.00       0.0       0.0                           179015.6875
-    0:00:26    8657.0      0.00       0.0       0.0                           179015.6875
-    0:00:26    8657.0      0.00       0.0       0.0                           179015.6875
-    0:00:26    8657.0      0.00       0.0       0.0                           179015.6875
-    0:00:26    8657.0      0.00       0.0       0.0                           179015.6875
-    0:00:26    8657.0      0.00       0.0       0.0                           179015.6875
-    0:00:26    8657.0      0.00       0.0       0.0                           179015.6875
-    0:00:26    8657.0      0.00       0.0       0.0                           179015.6875
-    0:00:26    8657.0      0.00       0.0       0.0                           179015.6875
-    0:00:26    8657.0      0.00       0.0       0.0                           179015.6875
-    0:00:26    8657.0      0.00       0.0       0.0                           179015.6875
-    0:00:26    8657.0      0.00       0.0       0.0                           179015.6875
-    0:00:26    8657.0      0.00       0.0       0.0                           179015.6875
-    0:00:26    8657.0      0.00       0.0       0.0                           179015.6875
-    0:00:26    8657.0      0.00       0.0       0.0                           179015.6875
+    0:00:24    8620.0      0.00       0.0       0.0                           177722.4688
+    0:00:24    8620.0      0.00       0.0       0.0                           177722.4688
+    0:00:25    8620.0      0.00       0.0       0.0                           177722.4688
+    0:00:25    8619.7      0.00       0.0       0.0                           177689.2812
+    0:00:25    8619.7      0.00       0.0       0.0                           177689.2812
+    0:00:25    8619.7      0.00       0.0       0.0                           177689.2812
+    0:00:25    8619.7      0.00       0.0       0.0                           177689.2812
+    0:00:25    8619.7      0.00       0.0       0.0                           177689.2812
+    0:00:25    8619.7      0.00       0.0       0.0                           177689.2812
+    0:00:25    8619.7      0.00       0.0       0.0                           177689.2812
+    0:00:25    8619.7      0.00       0.0       0.0                           177689.2812
+    0:00:25    8619.7      0.00       0.0       0.0                           177689.2812
+    0:00:25    8619.7      0.00       0.0       0.0                           177689.2812
+    0:00:25    8619.7      0.00       0.0       0.0                           177689.2812
+    0:00:25    8619.7      0.00       0.0       0.0                           177689.2812
+    0:00:25    8619.7      0.00       0.0       0.0                           177689.2812
+    0:00:25    8619.7      0.00       0.0       0.0                           177689.2812
+    0:00:25    8619.7      0.00       0.0       0.0                           177689.2812
+    0:00:25    8619.7      0.00       0.0       0.0                           177689.2812
+    0:00:25    8619.7      0.00       0.0       0.0                           177689.2812
+    0:00:25    8619.7      0.00       0.0       0.0                           177689.2812
+    0:00:25    8619.7      0.00       0.0       0.0                           177689.2812
 
                                   TOTAL                                                
    ELAPSED            WORST NEG   SETUP    DESIGN                              LEAKAGE 
     TIME      AREA      SLACK     COST    RULE COST         ENDPOINT            POWER  
   --------- --------- --------- --------- --------- ------------------------- ---------
-    0:00:26    8657.0      0.00       0.0       0.0                           179015.6875
-    0:00:26    8610.2      0.01       0.1       0.0                           176387.7656
-    0:00:26    8612.8      0.00       0.0       0.0                           176488.4062
-    0:00:26    8612.8      0.00       0.0       0.0                           176488.4062
-    0:00:26    8612.8      0.00       0.0       0.0                           176488.4062
-    0:00:27    8602.2      0.00       0.0       0.0                           176196.1562
-    0:00:27    8608.0      0.00       0.0       0.0                           176330.6094
-    0:00:27    8601.6      0.00       0.0       0.0                           176000.6562
+    0:00:25    8619.7      0.00       0.0       0.0                           177689.2812
+    0:00:25    8571.8      0.00       0.0       0.0                           175049.1562
+    0:00:25    8574.0      0.00       0.0       0.0                           175188.5625
+    0:00:25    8574.0      0.00       0.0       0.0                           175188.5625
+    0:00:26    8574.0      0.00       0.0       0.0                           175188.5625
+    0:00:26    8566.8      0.00       0.0       0.0                           174968.5625
+    0:00:26    8566.8      0.00       0.0       0.0                           174968.5625
+    0:00:26    8561.2      0.00       0.0       0.0                           174708.8906
 Loading db file '/home/home4/pmilder/ese507/synthesis/lib/NangateOpenCellLibrary_typical.db'
 
 
@@ -775,7 +772,7 @@ report_area
 Report : area
 Design : mvm4a_part4
 Version: J-2014.09-SP5-2
-Date   : Tue Oct 31 18:32:35 2017
+Date   : Fri Nov  3 00:13:38 2017
 ****************************************
 
 Information: Updating design information... (UID-85)
@@ -784,21 +781,21 @@ Library(s) Used:
     NangateOpenCellLibrary (File: /home/home4/pmilder/ese507/synthesis/lib/NangateOpenCellLibrary_typical.db)
 
 Number of ports:                           31
-Number of nets:                          4135
-Number of cells:                         3755
-Number of combinational cells:           2974
-Number of sequential cells:               777
+Number of nets:                          4136
+Number of cells:                         3698
+Number of combinational cells:           2916
+Number of sequential cells:               778
 Number of macros/black boxes:               0
-Number of buf/inv:                        524
-Number of references:                      46
+Number of buf/inv:                        466
+Number of references:                      41
 
-Combinational area:               4108.902014
-Buf/Inv area:                      383.040001
-Noncombinational area:            4492.739838
+Combinational area:               4095.602016
+Buf/Inv area:                      346.066001
+Noncombinational area:            4465.607839
 Macro/Black Box area:                0.000000
 Net Interconnect area:      undefined  (Wire load has zero net area)
 
-Total cell area:                  8601.641851
+Total cell area:                  8561.209854
 Total area:                 undefined
 1
 report_power
@@ -808,7 +805,7 @@ Report : power
         -analysis_effort low
 Design : mvm4a_part4
 Version: J-2014.09-SP5-2
-Date   : Tue Oct 31 18:32:35 2017
+Date   : Fri Nov  3 00:13:38 2017
 ****************************************
 
 
@@ -834,12 +831,12 @@ Power-specific unit information :
     Leakage Power Units = 1nW
 
 
-  Cell Internal Power  =   9.8379 mW   (97%)
-  Net Switching Power  = 305.4207 uW    (3%)
+  Cell Internal Power  =   9.6879 mW   (97%)
+  Net Switching Power  = 305.6048 uW    (3%)
                          ---------
-Total Dynamic Power    =  10.1433 mW  (100%)
+Total Dynamic Power    =   9.9935 mW  (100%)
 
-Cell Leakage Power     = 181.7440 uW
+Cell Leakage Power     = 180.9670 uW
 
 
                  Internal         Switching           Leakage            Total
@@ -849,11 +846,11 @@ io_pad             0.0000            0.0000            0.0000            0.0000 
 memory             0.0000            0.0000            0.0000            0.0000  (   0.00%)
 black_box          0.0000            0.0000            0.0000            0.0000  (   0.00%)
 clock_network      0.0000            0.0000            0.0000            0.0000  (   0.00%)
-register       9.7403e+03           22.7141        7.7114e+04        9.8402e+03  (  95.30%)
+register       9.5901e+03           22.6169        7.6762e+04        9.6895e+03  (  95.23%)
 sequential         0.0000            0.0000            0.0000            0.0000  (   0.00%)
-combinational     97.5566          282.7057        1.0463e+05          484.8931  (   4.70%)
+combinational     97.8083          282.9878        1.0420e+05          485.0009  (   4.77%)
 --------------------------------------------------------------------------------------------------
-Total          9.8379e+03 uW       305.4198 uW     1.8174e+05 nW     1.0325e+04 uW
+Total          9.6879e+03 uW       305.6047 uW     1.8097e+05 nW     1.0174e+04 uW
 1
 report_timing
  
@@ -864,15 +861,15 @@ Report : timing
         -max_paths 1
 Design : mvm4a_part4
 Version: J-2014.09-SP5-2
-Date   : Tue Oct 31 18:32:35 2017
+Date   : Fri Nov  3 00:13:38 2017
 ****************************************
 
 Operating Conditions: typical   Library: NangateOpenCellLibrary
 Wire Load Model Mode: top
 
-  Startpoint: genblk1[2].u_mac/vec_cnt_reg[0]
+  Startpoint: genblk1[2].u_mac/genblk1.genblk1.multinstance/mult_97/clk_r_REG29_S1
               (rising edge-triggered flip-flop clocked by clk)
-  Endpoint: genblk1[2].u_mac/f_reg[10]
+  Endpoint: genblk1[2].u_mac/genblk1.genblk1.multinstance/clk_r_REG4_S2
             (rising edge-triggered flip-flop clocked by clk)
   Path Group: clk
   Path Type: max
@@ -885,29 +882,39 @@ Wire Load Model Mode: top
   --------------------------------------------------------------------------
   clock clk (rise edge)                                   0.00       0.00
   clock network delay (ideal)                             0.00       0.00
-  genblk1[2].u_mac/vec_cnt_reg[0]/CK (DFF_X1)             0.00       0.00 r
-  genblk1[2].u_mac/vec_cnt_reg[0]/QN (DFF_X1)             0.08       0.08 r
-  U2351/ZN (AND2_X2)                                      0.08       0.15 r
-  U2706/ZN (NOR2_X1)                                      0.03       0.19 f
-  U2707/ZN (NOR2_X1)                                      0.06       0.25 r
-  U2722/ZN (OAI21_X1)                                     0.04       0.28 f
-  U2723/ZN (AOI21_X1)                                     0.05       0.34 r
-  U2724/ZN (OAI21_X1)                                     0.05       0.39 f
-  U3962/ZN (AOI21_X1)                                     0.07       0.45 r
-  U3964/ZN (XNOR2_X1)                                     0.07       0.52 r
-  U3965/ZN (AOI21_X1)                                     0.03       0.55 f
-  U3966/ZN (INV_X1)                                       0.03       0.58 r
-  genblk1[2].u_mac/f_reg[10]/D (DFF_X1)                   0.01       0.59 r
-  data arrival time                                                  0.59
+  genblk1[2].u_mac/genblk1.genblk1.multinstance/mult_97/clk_r_REG29_S1/CK (DFF_X1)
+                                                          0.00       0.00 r
+  genblk1[2].u_mac/genblk1.genblk1.multinstance/mult_97/clk_r_REG29_S1/Q (DFF_X1)
+                                                          0.08       0.08 f
+  genblk1[2].u_mac/genblk1.genblk1.multinstance/U74/S (FA_X1)
+                                                          0.14       0.23 r
+  genblk1[2].u_mac/genblk1.genblk1.multinstance/U2/ZN (AND2_X2)
+                                                          0.05       0.27 r
+  genblk1[2].u_mac/genblk1.genblk1.multinstance/U81/ZN (AOI21_X1)
+                                                          0.03       0.30 f
+  genblk1[2].u_mac/genblk1.genblk1.multinstance/U83/ZN (OAI21_X1)
+                                                          0.07       0.37 r
+  genblk1[2].u_mac/genblk1.genblk1.multinstance/U87/ZN (AOI21_X1)
+                                                          0.04       0.41 f
+  genblk1[2].u_mac/genblk1.genblk1.multinstance/U91/ZN (OAI21_X1)
+                                                          0.06       0.47 r
+  genblk1[2].u_mac/genblk1.genblk1.multinstance/U96/ZN (AOI21_X1)
+                                                          0.04       0.50 f
+  genblk1[2].u_mac/genblk1.genblk1.multinstance/U101/Z (XOR2_X1)
+                                                          0.07       0.57 f
+  genblk1[2].u_mac/genblk1.genblk1.multinstance/clk_r_REG4_S2/D (DFF_X1)
+                                                          0.01       0.58 f
+  data arrival time                                                  0.58
 
   clock clk (rise edge)                                   0.62       0.62
   clock network delay (ideal)                             0.00       0.62
-  genblk1[2].u_mac/f_reg[10]/CK (DFF_X1)                  0.00       0.62 r
-  library setup time                                     -0.03       0.59
-  data required time                                                 0.59
+  genblk1[2].u_mac/genblk1.genblk1.multinstance/clk_r_REG4_S2/CK (DFF_X1)
+                                                          0.00       0.62 r
+  library setup time                                     -0.04       0.58
+  data required time                                                 0.58
   --------------------------------------------------------------------------
-  data required time                                                 0.59
-  data arrival time                                                 -0.59
+  data required time                                                 0.58
+  data arrival time                                                 -0.58
   --------------------------------------------------------------------------
   slack (MET)                                                        0.00
 

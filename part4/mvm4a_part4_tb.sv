@@ -80,7 +80,7 @@ module tb_part4_mvm();
     int idr;
     int idx;
     int j;
-    int num_trans = 4000;
+    int num_trans = 2000;
     
     mvm4a_part4 #(
         .NROWS_A ( NROWS_A ),
