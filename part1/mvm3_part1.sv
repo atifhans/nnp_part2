@@ -59,6 +59,7 @@ module mvm3_part1 #(parameter NROWS_A = NROWS_A,
     assign overflow      = overflow_int;
     assign mac1_a        = data_out_a;
     assign mac1_b        = data_out_b;
+    assign s_ready       = (state != READ);
 
     assign addr_a   = (state == WRITE_A) ? wr_addr_a : rd_addr_a;
     assign addr_b   = (state == WRITE_B) ? wr_addr_b : rd_addr_b;
@@ -212,19 +213,6 @@ module mvm3_part1 #(parameter NROWS_A = NROWS_A,
             else if (valid_int && m_ready) begin
                 valid_int <= 1'b0;
                 overflow_int <= 1'b0;
-            end
-        end
-
-    always_ff @(posedge clk)
-        if(reset) begin
-            s_ready     <= 'd1;
-        end
-        else begin
-            if (state == READ) begin
-                s_ready <= 'd0;
-            end
-            else begin
-                s_ready <= 'd1;
             end
         end
 

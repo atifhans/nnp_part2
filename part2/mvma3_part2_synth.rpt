@@ -1,0 +1,627 @@
+
+                      Design Compiler Graphical
+                            DC Ultra (TM)
+                             DFTMAX (TM)
+                         Power Compiler (TM)
+                           DesignWare (R)
+                           DC Expert (TM)
+                         Design Vision (TM)
+                          HDL Compiler (TM)
+                         VHDL Compiler (TM)
+                            DFT Compiler
+                        Library Compiler (TM)
+                         Design Compiler(R)
+
+         Version J-2014.09-SP5-2 for RHEL64 -- Jul 11, 2015
+               Copyright (c) 1988-2015 Synopsys, Inc.
+
+This software and the associated documentation are confidential and 
+proprietary to Synopsys, Inc. Your use or disclosure of this software 
+is subject to the terms and conditions of a written license agreement 
+between you, or your company, and Synopsys, Inc.
+
+Initializing...
+##############################################
+# Setup: fill out the following parameters: name of clock signal, clock period (ns),
+# reset signal name (if used), name of top-level module, name of source file
+set CLK_NAME "clk";
+clk
+set CLK_PERIOD 0.62;
+0.62
+set RST_NAME "reset";
+reset
+set TOP_MOD_NAME "mvma3_part1";
+mvma3_part1
+set SRC_FILE "defines_pkg.sv mvma3_part2.sv memory.sv mac.sv";
+defines_pkg.sv mvma3_part2.sv memory.sv mac.sv
+###############################################
+source setupdc.tcl
+NangateOpenCellLibrary_typical.db dw_foundation.sldb
+file mkdir work_synth
+define_design_lib WORK -path work_synth
+1
+analyze $SRC_FILE -format sverilog
+Running PRESTO HDLC
+Searching for ./defines_pkg.sv
+Searching for ./mvma3_part2.sv
+Searching for ./memory.sv
+Searching for ./mac.sv
+Compiling source file ./defines_pkg.sv
+Warning:  ./defines_pkg.sv:11: Parameter keyword used in local parameter declaration. (VER-329)
+Compiling source file ./mvma3_part2.sv
+Compiling source file ./memory.sv
+Compiling source file ./mac.sv
+Presto compilation completed successfully.
+Loading db file '/home/home4/pmilder/ese507/synthesis/lib/NangateOpenCellLibrary_typical.db'
+Loading db file '/usr/local/synopsys/syn/libraries/syn/dw_foundation.sldb'
+1
+elaborate -work WORK $TOP_MOD_NAME
+Loading db file '/usr/local/synopsys/syn/libraries/syn/gtech.db'
+Loading db file '/usr/local/synopsys/syn/libraries/syn/standard.sldb'
+  Loading link library 'NangateOpenCellLibrary'
+  Loading link library 'gtech'
+Running PRESTO HDLC
+Warning:  ./mvma3_part2.sv:139: signed to unsigned conversion occurs. (VER-318)
+Warning:  ./mvma3_part2.sv:146: signed to unsigned conversion occurs. (VER-318)
+Warning:  ./mvma3_part2.sv:153: signed to unsigned conversion occurs. (VER-318)
+Warning:  ./mvma3_part2.sv:161: signed to unsigned conversion occurs. (VER-318)
+Warning:  ./mvma3_part2.sv:161: signed to unsigned conversion occurs. (VER-318)
+Warning:  ./mvma3_part2.sv:183: signed to unsigned conversion occurs. (VER-318)
+Warning:  ./mvma3_part2.sv:180: signed to unsigned conversion occurs. (VER-318)
+Warning:  ./mvma3_part2.sv:177: signed to unsigned conversion occurs. (VER-318)
+Warning:  ./mvma3_part2.sv:209: signed to unsigned conversion occurs. (VER-318)
+Warning:  ./mvma3_part2.sv:204: signed to unsigned conversion occurs. (VER-318)
+
+Statistics for case statements in always block at line 133 in file
+	'./mvma3_part2.sv'
+===============================================
+|           Line           |  full/ parallel  |
+===============================================
+|           136            |    auto/auto     |
+===============================================
+
+Inferred memory devices in process
+	in routine mvma3_part1 line 125 in file
+		'./mvma3_part2.sv'.
+===============================================================================
+|    Register Name    |   Type    | Width | Bus | MB | AR | AS | SR | SS | ST |
+===============================================================================
+|      state_reg      | Flip-flop |   2   |  Y  | N  | N  | N  | N  | N  | N  |
+===============================================================================
+
+Inferred memory devices in process
+	in routine mvma3_part1 line 170 in file
+		'./mvma3_part2.sv'.
+===============================================================================
+|    Register Name    |   Type    | Width | Bus | MB | AR | AS | SR | SS | ST |
+===============================================================================
+|    wr_addr_x_reg    | Flip-flop |   2   |  Y  | N  | N  | N  | N  | N  | N  |
+|    wr_addr_a_reg    | Flip-flop |   4   |  Y  | N  | N  | N  | N  | N  | N  |
+|    wr_addr_b_reg    | Flip-flop |   2   |  Y  | N  | N  | N  | N  | N  | N  |
+===============================================================================
+
+Inferred memory devices in process
+	in routine mvma3_part1 line 197 in file
+		'./mvma3_part2.sv'.
+===============================================================================
+|    Register Name    |   Type    | Width | Bus | MB | AR | AS | SR | SS | ST |
+===============================================================================
+|    rd_addr_x_reg    | Flip-flop |   2   |  Y  | N  | N  | N  | N  | N  | N  |
+|    rd_addr_a_reg    | Flip-flop |   4   |  Y  | N  | N  | N  | N  | N  | N  |
+|    rd_addr_b_reg    | Flip-flop |   2   |  Y  | N  | N  | N  | N  | N  | N  |
+===============================================================================
+
+Inferred memory devices in process
+	in routine mvma3_part1 line 220 in file
+		'./mvma3_part2.sv'.
+===============================================================================
+|    Register Name    |   Type    | Width | Bus | MB | AR | AS | SR | SS | ST |
+===============================================================================
+|     vec_cnt_reg     | Flip-flop |   2   |  Y  | N  | N  | N  | N  | N  | N  |
+|    next_req_reg     | Flip-flop |   1   |  N  | N  | N  | N  | N  | N  | N  |
+|  mac1_valid_in_reg  | Flip-flop |   1   |  N  | N  | N  | N  | N  | N  | N  |
+===============================================================================
+
+Inferred memory devices in process
+	in routine mvma3_part1 line 242 in file
+		'./mvma3_part2.sv'.
+===============================================================================
+|    Register Name    |   Type    | Width | Bus | MB | AR | AS | SR | SS | ST |
+===============================================================================
+|  overflow_int_reg   | Flip-flop |   1   |  N  | N  | N  | N  | N  | N  | N  |
+|    valid_int_reg    | Flip-flop |   1   |  N  | N  | N  | N  | N  | N  | N  |
+===============================================================================
+Presto compilation completed successfully.
+Elaborated 1 design.
+Current design is now 'mvma3_part1'.
+Information: Building the design 'memory' instantiated from design 'mvma3_part1' with
+	the parameters "WIDTH=8,SIZE=9,LOGSIZE=4". (HDL-193)
+
+Inferred memory devices in process
+	in routine memory_WIDTH8_SIZE9_LOGSIZE4 line 11 in file
+		'./memory.sv'.
+===============================================================================
+|    Register Name    |   Type    | Width | Bus | MB | AR | AS | SR | SS | ST |
+===============================================================================
+|    data_out_reg     | Flip-flop |   8   |  Y  | N  | N  | N  | N  | N  | N  |
+|       mem_reg       | Flip-flop |   8   |  Y  | N  | N  | N  | N  | N  | N  |
+|       mem_reg       | Flip-flop |   8   |  Y  | N  | N  | N  | N  | N  | N  |
+|       mem_reg       | Flip-flop |   8   |  Y  | N  | N  | N  | N  | N  | N  |
+|       mem_reg       | Flip-flop |   8   |  Y  | N  | N  | N  | N  | N  | N  |
+|       mem_reg       | Flip-flop |   8   |  Y  | N  | N  | N  | N  | N  | N  |
+|       mem_reg       | Flip-flop |   8   |  Y  | N  | N  | N  | N  | N  | N  |
+|       mem_reg       | Flip-flop |   8   |  Y  | N  | N  | N  | N  | N  | N  |
+|       mem_reg       | Flip-flop |   8   |  Y  | N  | N  | N  | N  | N  | N  |
+|       mem_reg       | Flip-flop |   8   |  Y  | N  | N  | N  | N  | N  | N  |
+===============================================================================
+Presto compilation completed successfully.
+Information: Building the design 'memory' instantiated from design 'mvma3_part1' with
+	the parameters "WIDTH=8,SIZE=3,LOGSIZE=2". (HDL-193)
+
+Inferred memory devices in process
+	in routine memory_WIDTH8_SIZE3_LOGSIZE2 line 11 in file
+		'./memory.sv'.
+===============================================================================
+|    Register Name    |   Type    | Width | Bus | MB | AR | AS | SR | SS | ST |
+===============================================================================
+|    data_out_reg     | Flip-flop |   8   |  Y  | N  | N  | N  | N  | N  | N  |
+|       mem_reg       | Flip-flop |   8   |  Y  | N  | N  | N  | N  | N  | N  |
+|       mem_reg       | Flip-flop |   8   |  Y  | N  | N  | N  | N  | N  | N  |
+|       mem_reg       | Flip-flop |   8   |  Y  | N  | N  | N  | N  | N  | N  |
+===============================================================================
+Presto compilation completed successfully.
+Information: Building the design 'part3_mac' instantiated from design 'mvma3_part1' with
+	the parameters "NUM_S=2". (HDL-193)
+Warning:  ./mac.sv:119: signed to unsigned conversion occurs. (VER-318)
+
+Inferred memory devices in process
+	in routine part3_mac_NUM_S2 line 60 in file
+		'./mac.sv'.
+===============================================================================
+|    Register Name    |   Type    | Width | Bus | MB | AR | AS | SR | SS | ST |
+===============================================================================
+|    enable_m_reg     | Flip-flop |   1   |  N  | N  | N  | N  | N  | N  | N  |
+===============================================================================
+
+Inferred memory devices in process
+	in routine part3_mac_NUM_S2 line 75 in file
+		'./mac.sv'.
+===============================================================================
+|    Register Name    |   Type    | Width | Bus | MB | AR | AS | SR | SS | ST |
+===============================================================================
+|    enable_d_reg     | Flip-flop |   1   |  N  | N  | N  | N  | N  | N  | N  |
+|      a_int_reg      | Flip-flop |   8   |  Y  | N  | N  | N  | N  | N  | N  |
+|      b_int_reg      | Flip-flop |   8   |  Y  | N  | N  | N  | N  | N  | N  |
+|      x_int_reg      | Flip-flop |   8   |  Y  | N  | N  | N  | N  | N  | N  |
+===============================================================================
+
+Inferred memory devices in process
+	in routine part3_mac_NUM_S2 line 96 in file
+		'./mac.sv'.
+===============================================================================
+|    Register Name    |   Type    | Width | Bus | MB | AR | AS | SR | SS | ST |
+===============================================================================
+|    enable_f_reg     | Flip-flop |   1   |  N  | N  | N  | N  | N  | N  | N  |
+|      d_int_reg      | Flip-flop |  16   |  Y  | N  | N  | N  | N  | N  | N  |
+===============================================================================
+
+Inferred memory devices in process
+	in routine part3_mac_NUM_S2 line 112 in file
+		'./mac.sv'.
+===============================================================================
+|    Register Name    |   Type    | Width | Bus | MB | AR | AS | SR | SS | ST |
+===============================================================================
+|     vec_cnt_reg     | Flip-flop |   2   |  Y  | N  | N  | N  | N  | N  | N  |
+|        f_reg        | Flip-flop |  16   |  Y  | N  | N  | N  | N  | N  | N  |
+|    valid_out_reg    | Flip-flop |   1   |  N  | N  | N  | N  | N  | N  | N  |
+===============================================================================
+
+Inferred memory devices in process
+	in routine part3_mac_NUM_S2 line 130 in file
+		'./mac.sv'.
+===============================================================================
+|    Register Name    |   Type    | Width | Bus | MB | AR | AS | SR | SS | ST |
+===============================================================================
+|    overflow_reg     | Flip-flop |   1   |  N  | N  | N  | N  | N  | N  | N  |
+===============================================================================
+Presto compilation completed successfully.
+1
+###### CLOCKS AND PORTS #######
+set CLK_PORT [get_ports $CLK_NAME]
+{clk}
+set TMP1 [remove_from_collection [all_inputs] $CLK_PORT]
+{reset s_valid m_ready data_in[7] data_in[6] data_in[5] data_in[4] data_in[3] data_in[2] data_in[1] data_in[0]}
+set INPUTS [remove_from_collection $TMP1 $RST_NAME]
+{s_valid m_ready data_in[7] data_in[6] data_in[5] data_in[4] data_in[3] data_in[2] data_in[1] data_in[0]}
+create_clock -period $CLK_PERIOD [get_ports clk]
+1
+# set delay for inputs to be 0.2ns
+set_input_delay 0.2 -max -clock clk $INPUTS
+1
+set_output_delay 0.2 -max -clock clk [all_outputs]
+1
+###### OPTIMIZATION #######
+set_max_area 0 
+1
+###### RUN #####
+compile_ultra
+Information: Performing power optimization. (PWR-850)
+Alib files are up-to-date.
+Information: Evaluating DesignWare library utilization. (UISN-27)
+
+============================================================================
+| DesignWare Building Block Library  |         Version         | Available |
+============================================================================
+| Basic DW Building Blocks           | J-2014.09-DWBB_201409.5.2 |   *     |
+| Licensed DW Building Blocks        | J-2014.09-DWBB_201409.5.2 |   *     |
+============================================================================
+
+Information: Sequential output inversion is enabled.  SVF file must be used for formal verification. (OPT-1208)
+
+Information: There are 9 potential problems in your design. Please run 'check_design' for more information. (LINT-99)
+
+
+Loaded alib file './alib-52/NangateOpenCellLibrary_typical.db.alib'
+  Building model 'DW01_NAND2'
+Information: Ungrouping hierarchy u_mat_a_mem before Pass 1 (OPT-776)
+Information: Ungrouping hierarchy u_mat_b_mem before Pass 1 (OPT-776)
+Information: Ungrouping hierarchy u_mat_x_mem before Pass 1 (OPT-776)
+Information: Ungrouping hierarchy u_mac_1 before Pass 1 (OPT-776)
+Information: Ungrouping 4 of 5 hierarchies before Pass 1 (OPT-775)
+Information: State dependent leakage is now switched from on to off.
+
+  Beginning Pass 1 Mapping
+  ------------------------
+  Processing 'mvma3_part1'
+Information: Added key list 'DesignWare' to design 'mvma3_part1'. (DDB-72)
+ Implement Synthetic for 'mvma3_part1'.
+  Processing 'mvma3_part1_DW02_mult_2_stage_J1_0'
+
+  Updating timing information
+Information: Updating design information... (UID-85)
+
+  Beginning Mapping Optimizations  (Ultra High effort)
+  -------------------------------
+Information: Checking pipeline property of cell u_mac_1/genblk1.genblk1.multinstance (design mvma3_part1_DW02_mult_2_stage_J1_0). (RTDC-137)
+Information: cell u_mac_1/genblk1.genblk1.multinstance (design mvma3_part1_DW02_mult_2_stage_J1_0) is a pipeline. (RTDC-139)
+  Mapping Optimization (Phase 1)
+  Retiming mvma3_part1_DW02_mult_2_stage_J1_0 (u_mac_1/genblk1.genblk1.multinstance)
+  Preferred flip-flop is DFFS_X1 with setup = 0.04
+
+
+  Retiming base-clock clk, rising edge.
+  Beginning minimum period retiming ...
+  ... minimum period retiming done.
+  Beginning minimum area retiming step 1 ...
+  ... minimum area retiming step 1 done.
+  Beginning minimum area retiming step 2 ...
+  5% 10% 15% 20% 25% 30% 35% 40% 45% 50% 55% 60% 65% 70% 75% 80% 85% 90% 95% 100% 
+  ... minimum area retiming step 2 done.
+  Beginning minimum area retiming step 3 ...
+  20% 40% 60% 80% ... 100% 
+  ... minimum area retiming step 3 done.
+  Beginning final register move ...
+  ... final register move done.
+  Lower bound estimate = 0.85
+  Critical path length = 0.85
+  Clock correction = 0.13 (clock-to-Q delay = 0.09, setup = 0.04, uncertainty = 0.00)
+  Mapping Optimization (Phase 2)
+
+                                  TOTAL                                                
+   ELAPSED            WORST NEG   SETUP    DESIGN                              LEAKAGE 
+    TIME      AREA      SLACK     COST    RULE COST         ENDPOINT            POWER  
+  --------- --------- --------- --------- --------- ------------------------- ---------
+    0:00:03    2622.5      0.30      23.3       0.0                           59369.4805
+    0:00:03    2622.5      0.30      23.3       0.0                           59369.4805
+    0:00:03    2622.5      0.30      23.3       0.0                           59369.4805
+    0:00:03    2618.8      0.30      23.3       0.0                           59236.3086
+  Re-synthesis Optimization (Phase 1)
+  Re-synthesis Optimization (Phase 2)
+  Global Optimization (Phase 1)
+  Global Optimization (Phase 2)
+  Global Optimization (Phase 3)
+  Global Optimization (Phase 4)
+  Global Optimization (Phase 5)
+  Global Optimization (Phase 6)
+  Global Optimization (Phase 7)
+  Global Optimization (Phase 8)
+  Global Optimization (Phase 9)
+  Global Optimization (Phase 10)
+  Global Optimization (Phase 11)
+  Global Optimization (Phase 12)
+  Global Optimization (Phase 13)
+  Global Optimization (Phase 14)
+  Global Optimization (Phase 15)
+  Global Optimization (Phase 16)
+  Global Optimization (Phase 17)
+  Global Optimization (Phase 18)
+  Global Optimization (Phase 19)
+  Global Optimization (Phase 20)
+  Global Optimization (Phase 21)
+  Global Optimization (Phase 22)
+  Global Optimization (Phase 23)
+  Global Optimization (Phase 24)
+  Global Optimization (Phase 25)
+  Global Optimization (Phase 26)
+  Global Optimization (Phase 27)
+  Global Optimization (Phase 28)
+  Global Optimization (Phase 29)
+  Global Optimization (Phase 30)
+  Global Optimization (Phase 31)
+    0:00:04    2306.5      0.14      11.7       0.0                           48137.2188
+
+
+
+  Beginning Delay Optimization Phase
+  ----------------------------------
+
+                                  TOTAL                                                
+   ELAPSED            WORST NEG   SETUP    DESIGN                              LEAKAGE 
+    TIME      AREA      SLACK     COST    RULE COST         ENDPOINT            POWER  
+  --------- --------- --------- --------- --------- ------------------------- ---------
+    0:00:04    2306.5      0.14      11.7       0.0                           48137.2188
+    0:00:04    2306.5      0.14      11.7       0.0                           48137.2188
+    0:00:04    2307.0      0.14      11.8       0.0                           48154.6133
+    0:00:04    2307.0      0.14      11.8       0.0                           48154.6133
+    0:00:05    2322.4      0.12       8.3       0.0                           48653.9102
+    0:00:05    2322.4      0.12       8.3       0.0                           48653.9102
+    0:00:05    2322.4      0.12       8.3       0.0                           48657.9258
+    0:00:05    2322.4      0.12       8.3       0.0                           48657.9258
+    0:00:05    2361.8      0.10       5.7       0.0                           49903.5391
+    0:00:05    2361.8      0.10       5.7       0.0                           49903.5391
+    0:00:05    2367.7      0.08       5.8       0.0                           50068.3438
+    0:00:05    2367.7      0.08       5.8       0.0                           50068.3438
+    0:00:05    2380.2      0.08       5.8       0.0                           50454.0117
+
+  Beginning Delay Optimization
+  ----------------------------
+    0:00:05    2374.0      0.08       5.6       0.0                           50260.1328
+    0:00:06    2429.1      0.06       4.3       4.9                           52080.0469
+    0:00:06    2429.1      0.06       4.3       4.9                           52080.0469
+    0:00:06    2477.3      0.05       3.5       4.9                           53538.7695
+    0:00:06    2477.3      0.05       3.5       4.9                           53538.7695
+    0:00:07    2481.0      0.05       2.8       4.9                           53674.5195
+    0:00:07    2481.0      0.05       2.8       4.9                           53674.5195
+    0:00:08    2497.5      0.04       2.7       4.9                           54183.7930
+    0:00:08    2496.4      0.05       2.7       4.9                           54133.4492
+
+
+  Beginning Design Rule Fixing  (max_capacitance)
+  ----------------------------
+
+                                  TOTAL                                                
+   ELAPSED            WORST NEG   SETUP    DESIGN                              LEAKAGE 
+    TIME      AREA      SLACK     COST    RULE COST         ENDPOINT            POWER  
+  --------- --------- --------- --------- --------- ------------------------- ---------
+    0:00:08    2496.4      0.05       2.7       4.9                           54133.4492
+  Global Optimization (Phase 32)
+  Global Optimization (Phase 33)
+  Global Optimization (Phase 34)
+    0:00:08    2494.5      0.00       0.0       0.0                           53638.5664
+    0:00:08    2494.5      0.00       0.0       0.0                           53638.5664
+
+                                  TOTAL                                                
+   ELAPSED            WORST NEG   SETUP    DESIGN                              LEAKAGE 
+    TIME      AREA      SLACK     COST    RULE COST         ENDPOINT            POWER  
+  --------- --------- --------- --------- --------- ------------------------- ---------
+    0:00:08    2494.5      0.00       0.0       0.0                           53638.5664
+    0:00:09    2494.5      0.00       0.0       0.0                           53638.5664
+
+
+  Beginning Leakage Power Optimization  (max_leakage_power 0)
+  ------------------------------------
+
+                                  TOTAL                                                
+   ELAPSED            WORST NEG   SETUP    DESIGN                              LEAKAGE 
+    TIME      AREA      SLACK     COST    RULE COST         ENDPOINT            POWER  
+  --------- --------- --------- --------- --------- ------------------------- ---------
+    0:00:09    2491.6      0.00       0.0       0.0                           53564.4375
+  Global Optimization (Phase 35)
+  Global Optimization (Phase 36)
+  Global Optimization (Phase 37)
+  Global Optimization (Phase 38)
+  Global Optimization (Phase 39)
+  Global Optimization (Phase 40)
+  Global Optimization (Phase 41)
+  Global Optimization (Phase 42)
+  Global Optimization (Phase 43)
+  Global Optimization (Phase 44)
+  Global Optimization (Phase 45)
+  Global Optimization (Phase 46)
+  Global Optimization (Phase 47)
+  Global Optimization (Phase 48)
+  Global Optimization (Phase 49)
+  Global Optimization (Phase 50)
+    0:00:09    2399.3      0.00       0.0       0.0                           49964.1328
+    0:00:09    2399.3      0.00       0.0       0.0                           49964.1328
+    0:00:09    2399.3      0.00       0.0       0.0                           49964.1328
+    0:00:09    2399.3      0.00       0.0       0.0                           49964.1328
+    0:00:09    2399.3      0.00       0.0       0.0                           49964.1328
+    0:00:09    2399.3      0.00       0.0       0.0                           49964.1328
+    0:00:09    2399.3      0.00       0.0       0.0                           49964.1328
+    0:00:09    2399.3      0.00       0.0       0.0                           49964.1328
+    0:00:09    2399.3      0.00       0.0       0.0                           49964.1328
+    0:00:09    2399.3      0.00       0.0       0.0                           49964.1328
+    0:00:09    2399.3      0.00       0.0       0.0                           49964.1328
+    0:00:09    2399.3      0.00       0.0       0.0                           49964.1328
+    0:00:09    2399.3      0.00       0.0       0.0                           49964.1328
+    0:00:09    2399.3      0.00       0.0       0.0                           49964.1328
+    0:00:09    2399.3      0.00       0.0       0.0                           49964.1328
+    0:00:09    2399.3      0.00       0.0       0.0                           49964.1328
+    0:00:09    2399.3      0.00       0.0       0.0                           49964.1328
+    0:00:09    2399.3      0.00       0.0       0.0                           49964.1328
+    0:00:09    2399.3      0.00       0.0       0.0                           49964.1328
+    0:00:09    2399.3      0.00       0.0       0.0                           49964.1328
+    0:00:09    2399.3      0.00       0.0       0.0                           49964.1328
+    0:00:09    2399.3      0.00       0.0       0.0                           49964.1328
+
+                                  TOTAL                                                
+   ELAPSED            WORST NEG   SETUP    DESIGN                              LEAKAGE 
+    TIME      AREA      SLACK     COST    RULE COST         ENDPOINT            POWER  
+  --------- --------- --------- --------- --------- ------------------------- ---------
+    0:00:09    2399.3      0.00       0.0       0.0                           49964.1328
+    0:00:09    2390.3      0.00       0.0       0.0                           49460.5820
+    0:00:09    2390.3      0.00       0.0       0.0                           49460.5820
+    0:00:09    2390.3      0.00       0.0       0.0                           49460.5820
+    0:00:09    2390.3      0.00       0.0       0.0                           49460.5820
+    0:00:10    2386.8      0.00       0.0       0.0                           49338.9766
+    0:00:10    2386.8      0.00       0.0       0.0                           49338.9766
+    0:00:10    2386.0      0.00       0.0       0.0                           49298.6211
+Loading db file '/home/home4/pmilder/ese507/synthesis/lib/NangateOpenCellLibrary_typical.db'
+
+
+Note: Symbol # after min delay cost means estimated hold TNS across all active scenarios 
+
+
+  Optimization Complete
+  ---------------------
+Information: State dependent leakage is now switched from off to on.
+Information: Propagating switching activity (low effort zero delay simulation). (PWR-6)
+1
+report_area
+ 
+****************************************
+Report : area
+Design : mvma3_part1
+Version: J-2014.09-SP5-2
+Date   : Mon Oct 30 14:27:15 2017
+****************************************
+
+Information: Updating design information... (UID-85)
+Library(s) Used:
+
+    NangateOpenCellLibrary (File: /home/home4/pmilder/ese507/synthesis/lib/NangateOpenCellLibrary_typical.db)
+
+Number of ports:                           31
+Number of nets:                          1180
+Number of cells:                         1090
+Number of combinational cells:            858
+Number of sequential cells:               231
+Number of macros/black boxes:               0
+Number of buf/inv:                        223
+Number of references:                      33
+
+Combinational area:               1219.344005
+Buf/Inv area:                      160.664001
+Noncombinational area:            1166.675958
+Macro/Black Box area:                0.000000
+Net Interconnect area:      undefined  (Wire load has zero net area)
+
+Total cell area:                  2386.019963
+Total area:                 undefined
+1
+report_power
+ 
+****************************************
+Report : power
+        -analysis_effort low
+Design : mvma3_part1
+Version: J-2014.09-SP5-2
+Date   : Mon Oct 30 14:27:15 2017
+****************************************
+
+
+Library(s) Used:
+
+    NangateOpenCellLibrary (File: /home/home4/pmilder/ese507/synthesis/lib/NangateOpenCellLibrary_typical.db)
+
+
+Operating Conditions: typical   Library: NangateOpenCellLibrary
+Wire Load Model Mode: top
+
+Design        Wire Load Model            Library
+------------------------------------------------
+mvma3_part1            5K_hvratio_1_1    NangateOpenCellLibrary
+
+
+Global Operating Voltage = 1.1  
+Power-specific unit information :
+    Voltage Units = 1V
+    Capacitance Units = 1.000000ff
+    Time Units = 1ns
+    Dynamic Power Units = 1uW    (derived from V,C,T units)
+    Leakage Power Units = 1nW
+
+
+  Cell Internal Power  =   2.1997 mW   (94%)
+  Net Switching Power  = 136.7796 uW    (6%)
+                         ---------
+Total Dynamic Power    =   2.3365 mW  (100%)
+
+Cell Leakage Power     =  48.8732 uW
+
+
+                 Internal         Switching           Leakage            Total
+Power Group      Power            Power               Power              Power   (   %    )  Attrs
+--------------------------------------------------------------------------------------------------
+io_pad             0.0000            0.0000            0.0000            0.0000  (   0.00%)
+memory             0.0000            0.0000            0.0000            0.0000  (   0.00%)
+black_box          0.0000            0.0000            0.0000            0.0000  (   0.00%)
+clock_network      0.0000            0.0000            0.0000            0.0000  (   0.00%)
+register       2.1313e+03           17.1416        2.0136e+04        2.1686e+03  (  90.91%)
+sequential         0.0000            0.0000            0.0000            0.0000  (   0.00%)
+combinational     68.4002          119.6381        2.8737e+04          216.7754  (   9.09%)
+--------------------------------------------------------------------------------------------------
+Total          2.1997e+03 uW       136.7797 uW     4.8873e+04 nW     2.3854e+03 uW
+1
+report_timing
+ 
+****************************************
+Report : timing
+        -path full
+        -delay max
+        -max_paths 1
+Design : mvma3_part1
+Version: J-2014.09-SP5-2
+Date   : Mon Oct 30 14:27:15 2017
+****************************************
+
+Operating Conditions: typical   Library: NangateOpenCellLibrary
+Wire Load Model Mode: top
+
+  Startpoint: s_valid (input port clocked by clk)
+  Endpoint: u_mat_a_mem/mem_reg[1][0]
+            (rising edge-triggered flip-flop clocked by clk)
+  Path Group: clk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  mvma3_part1        5K_hvratio_1_1        NangateOpenCellLibrary
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  clock clk (rise edge)                                   0.00       0.00
+  clock network delay (ideal)                             0.00       0.00
+  input external delay                                    0.20       0.20 r
+  s_valid (in)                                            0.00       0.20 r
+  U806/ZN (NAND2_X1)                                      0.04       0.24 f
+  U807/ZN (NOR2_X1)                                       0.06       0.29 r
+  U811/ZN (NAND2_X1)                                      0.05       0.34 f
+  U716/ZN (OR2_X1)                                        0.09       0.43 f
+  U725/ZN (INV_X1)                                        0.07       0.50 r
+  U1381/ZN (OAI22_X1)                                     0.05       0.55 f
+  U1382/ZN (INV_X1)                                       0.03       0.58 r
+  u_mat_a_mem/mem_reg[1][0]/D (DFF_X1)                    0.01       0.59 r
+  data arrival time                                                  0.59
+
+  clock clk (rise edge)                                   0.62       0.62
+  clock network delay (ideal)                             0.00       0.62
+  u_mat_a_mem/mem_reg[1][0]/CK (DFF_X1)                   0.00       0.62 r
+  library setup time                                     -0.03       0.59
+  data required time                                                 0.59
+  --------------------------------------------------------------------------
+  data required time                                                 0.59
+  data arrival time                                                 -0.59
+  --------------------------------------------------------------------------
+  slack (MET)                                                        0.00
+
+
+1
+write -f verilog $TOP_MOD_NAME -output gates.v -hierarchy
+Writing verilog file '/home/home5/aahangar/proj2/part2/gates.v'.
+Warning: Verilog 'assign' or 'tran' statements are written out. (VO-4)
+1
+quit
+
+Thank you...

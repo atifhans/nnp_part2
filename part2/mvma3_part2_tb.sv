@@ -45,8 +45,10 @@ class mat_mult_model;
             for(int j = 0; j < NCOLS_A; j++) begin
                 int_a = mat_a[j+i*NCOLS_A][idx] * mat_b[j][idx];
                 int_b = mat[i][idx] + int_a;
-                ovf[i][idx] = ((mat[i][idx] > 0 && int_a > 0 && int_b < 0) ||
-                               (mat[i][idx] < 0 && int_a < 0 && int_b > 0));
+                if(j == 0 || ovf[i][idx] == 0) begin
+                    ovf[i][idx] = ((mat[i][idx] > 0 && int_a > 0 && int_b < 0) ||
+                                   (mat[i][idx] < 0 && int_a < 0 && int_b > 0));
+                end
                 mat[i][idx] = int_b;
             end
         end
@@ -76,17 +78,30 @@ module tb_part2_mvm();
     int j;
     int num_trans = 4000;
     
-    mvm3_part1 #(
+    mvma3_part2 #(
         .NROWS_A ( NROWS_A ),
         .NCOLS_A ( NCOLS_A ),
         .NROWS_B ( NROWS_B ),
         .NCOLS_B ( NCOLS_B )) 
     dut(.*);
 
+    covergroup mvm_cov () @(posedge clk);
+        option.name = "MVM coverage";
+        option.goal = 100;
+        option.weight = 50;
+        option.per_instance = 1;
+        cover_point_data_in  : coverpoint data_in;
+        cover_point_data_out : coverpoint data_out;
+        cover_point_m_ready  : coverpoint m_ready; 
+        cover_point_s_valid  : coverpoint s_valid; 
+        cover_point_overflow : coverpoint overflow; 
+    endgroup
+
     initial clk = 0;
     always #5 clk = ~clk;
 
     mat_mult_model matm_m = new();
+    mvm_cov mvm_cov_inst = new();
 
     initial begin
 
@@ -104,33 +119,30 @@ module tb_part2_mvm();
         end
 
         for (int i = 0; i < num_trans; i++) begin
-            if(overflow) $display("Overflow Dectected By DUT!");
             matm_m.randomize();
-            data_in = matm_m.mat_a_in[0];
             for (j = 0; j < M_SIZE_A; ) begin
-                @(posedge clk);
-                //#1;
-                j = (s_valid && s_ready) ? j+1 : j;
+                std::randomize(s_valid, m_ready);
+                //s_valid = 1;
+                //m_ready = 1;
                 data_in = matm_m.mat_a_in[j];
-                std::randomize(s_valid, m_ready);
-            end
-            j = 0;
-            data_in = matm_m.mat_b_in[j];
-            for (j = 0; j < M_SIZE_B; ) begin
                 @(posedge clk);
-                //#1;
                 j = (s_valid && s_ready) ? j+1 : j;
-                data_in = matm_m.mat_b_in[j];
-                std::randomize(s_valid, m_ready);
             end
-            j = 0;
-            data_in = matm_m.mat_x_in[j];
             for (j = 0; j < M_SIZE_B; ) begin
-                @(posedge clk);
-                //#1;
-                j = (s_valid && s_ready) ? j+1 : j;
+                std::randomize(s_valid, m_ready);
+                //s_valid = 1;
+                //m_ready = 1;
                 data_in = matm_m.mat_x_in[j];
+                @(posedge clk);
+                j = (s_valid && s_ready) ? j+1 : j;
+            end
+            for (j = 0; j < M_SIZE_B; ) begin
                 std::randomize(s_valid, m_ready);
+                //s_valid = 1;
+                //m_ready = 1;
+                data_in = matm_m.mat_b_in[j];
+                @(posedge clk);
+                j = (s_valid && s_ready) ? j+1 : j;
             end
         end
 
@@ -165,18 +177,25 @@ module tb_part2_mvm();
                     $write("%d ", matm_m.mat_x[i][idx]);
                 end
                 $write("\n");
-                $display("Matrix Z:");
+                $display("Matrix Out:");
                 for(int i = 0; i < NCOLS_A; i++) begin
                     $write("%d ", matm_m.mat[i][idx]);
+                end
+                $write("\n");
+                $display("Overflow Out:");
+                for(int i = 0; i < NCOLS_A; i++) begin
+                    $write("%d ", matm_m.ovf[i][idx]);
                 end
                 $write("\n");
                 $display("------Transaction Data End----------");
             end
             
-            if(data_out == matm_m.mat[idr][idx])
-                $display("PASSED - IDX: %d, IDR: %d, Output: %d, Exp Output: %d", idx, idr, data_out, matm_m.mat[idr][idx]);
+            if(data_out == matm_m.mat[idr][idx] && overflow == matm_m.ovf[idr][idx])
+                $display("PASSED - IDX: %d, IDR: %d, Output: %d, Exp Output: %d, Ovf: %d, Exp Ovf: %d", 
+                         idx, idr, data_out, matm_m.mat[idr][idx], overflow, matm_m.ovf[idr][idx]);
             else begin
-                $display("FAILED - IDX: %d, IDR: %d, Output: %d, Exp Output: %d", idx, idr, data_out, matm_m.mat[idr][idx]);
+                $display("FAILED - IDX: %d, IDR: %d, Output: %d, Exp Output: %d, Ovf: %d, Exp Ovf: %d", 
+                         idx, idr, data_out, matm_m.mat[idr][idx], overflow, matm_m.ovf[idr][idx]);
                 $display("!!!Verification FAILED!!!");
                 $finish();
             end

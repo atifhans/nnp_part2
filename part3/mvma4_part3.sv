@@ -8,7 +8,7 @@
 
 import defines_pkg::*;
 
-module mvm3_part1 #(parameter NROWS_A = NROWS_A,
+module mvma4_part3 #(parameter NROWS_A = NROWS_A,
                     parameter NCOLS_A = NCOLS_A,
                     parameter NROWS_B = NROWS_B,
                     parameter NCOLS_B = NCOLS_B)
@@ -28,6 +28,7 @@ module mvm3_part1 #(parameter NROWS_A = NROWS_A,
     localparam MAT_B_SIZE  = NROWS_B * NCOLS_B;
     localparam MAT_A_LSIZE = $clog2(MAT_A_SIZE);
     localparam MAT_B_LSIZE = $clog2(MAT_B_SIZE);
+    localparam VCNT_LSIZE  = $clog2(VEC_S+1);
 
     enum logic [1:0] {WRITE_A=0, WRITE_B=1, WRITE_X=2, READ=3} state, next_state;
 
@@ -46,7 +47,7 @@ module mvm3_part1 #(parameter NROWS_A = NROWS_A,
     logic                          wr_en_a;
     logic                          wr_en_b;
     logic                          wr_en_x;
-    logic                    [1:0] vec_cnt;
+    logic         [VCNT_LSIZE-1:0] vec_cnt;
 
     logic signed             [7:0] mac1_a;
     logic signed             [7:0] mac1_b;
@@ -66,6 +67,7 @@ module mvm3_part1 #(parameter NROWS_A = NROWS_A,
     assign mac1_a        = data_out_a;
     assign mac1_b        = data_out_b;
     assign mac1_x        = data_out_x;
+    assign s_ready       = (state != READ);
 
     assign addr_a   = (state == WRITE_A) ? wr_addr_a : rd_addr_a;
     assign addr_b   = (state == WRITE_B) ? wr_addr_b : rd_addr_b;
@@ -108,7 +110,8 @@ module mvm3_part1 #(parameter NROWS_A = NROWS_A,
         .wr_en    ( wr_en_x         ));
 
     part3_mac #(
-        .NUM_S     ( 2              ))
+        .NUM_S     ( NUM_S          ),
+        .VEC_S     ( VEC_S          ))
     u_mac_1 (
         .clk       ( clk            ),
         .reset     ( reset          ),
@@ -136,24 +139,25 @@ module mvm3_part1 #(parameter NROWS_A = NROWS_A,
 
             WRITE_A: begin
                 if(wr_addr_a == MAT_A_SIZE-1 && s_valid)
-                    next_state = WRITE_B;
+                    next_state = WRITE_X;
                 else
                     next_state = WRITE_A;
             end
 
+            WRITE_X: begin
+                if(wr_addr_x == MAT_B_SIZE-1 && s_valid)
+                    next_state = WRITE_B;
+                else
+                    next_state = WRITE_X;
+            end
+
             WRITE_B: begin
                 if(wr_addr_b == MAT_B_SIZE-1 && s_valid)
-                    next_state = WRITE_X;
+                    next_state = READ;
                 else
                     next_state = WRITE_B;
             end
 
-            WRITE_X: begin
-                if(wr_addr_x == MAT_B_SIZE-1 && s_valid)
-                    next_state = READ;
-                else
-                    next_state = WRITE_X;
-            end
 
             READ: begin
                 if(rd_addr_a == MAT_A_SIZE-1 && rd_addr_b == MAT_B_SIZE-1 && next_req)
@@ -209,7 +213,7 @@ module mvm3_part1 #(parameter NROWS_A = NROWS_A,
                 rd_addr_x <= rd_addr_x + 1'd1;
                 rd_addr_b <= 'd0;
             end
-            else if ((state == READ) && vec_cnt < 2'd3 && next_req) begin
+            else if ((state == READ) && vec_cnt < NROWS_A && next_req) begin
                 rd_addr_a <= rd_addr_a + 1'd1;
                 rd_addr_b <= rd_addr_b + 1'd1;
             end
@@ -222,7 +226,7 @@ module mvm3_part1 #(parameter NROWS_A = NROWS_A,
             vec_cnt       <=  'd0;
         end
         else begin
-            if (vec_cnt == 2'd3) begin
+            if (vec_cnt == NROWS_A) begin
                 next_req      <= 1'b0;
                 mac1_valid_in <= 1'b0;
                 vec_cnt       <= 2'd0;
@@ -250,19 +254,6 @@ module mvm3_part1 #(parameter NROWS_A = NROWS_A,
             else if (valid_int && m_ready) begin
                 valid_int <= 1'b0;
                 overflow_int <= 1'b0;
-            end
-        end
-
-    always_ff @(posedge clk)
-        if(reset) begin
-            s_ready     <= 'd1;
-        end
-        else begin
-            if (state == READ) begin
-                s_ready <= 'd0;
-            end
-            else begin
-                s_ready <= 'd1;
             end
         end
 
